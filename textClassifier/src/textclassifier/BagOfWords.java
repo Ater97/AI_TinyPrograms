@@ -15,8 +15,8 @@ import java.util.Set;
  */
 public class BagOfWords extends HashMap<String, Integer>{
     
-    private HashMap<String, Integer> universe;
-    private ArrayList<String> vocabulary;
+    private final HashMap<String, Integer> universe;
+    private final ArrayList<String> vocabulary;
     final int smoother = 1;
 
     BagOfWords() {
