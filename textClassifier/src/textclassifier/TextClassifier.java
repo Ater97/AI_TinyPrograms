@@ -16,7 +16,6 @@ public class TextClassifier {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        //view v = new view();
                 java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new view().setVisible(true);
