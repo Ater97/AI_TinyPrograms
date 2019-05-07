@@ -63,7 +63,7 @@
                   <Component id="ChooseFile" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="filePaht" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="37" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -164,7 +164,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Vocabulary:"/>
+        <Property name="text" type="java.lang.String" value="Data:"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -5,10 +5,12 @@
  */
 package textclassifier;
 
+import com.sun.corba.se.impl.orbutil.CorbaResourceUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -98,7 +100,7 @@ public class View extends javax.swing.JFrame {
 
         jLabel2.setText("Input:");
 
-        jLabel3.setText("Vocabulary:");
+        jLabel3.setText("Data:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,7 +136,7 @@ public class View extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ChooseFile)
                     .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
@@ -194,7 +196,9 @@ public class View extends javax.swing.JFrame {
 
     private void enterInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterInputActionPerformed
         // Load new words
-        
+       bagOfWords.AddPhrase(inputText.getText());
+       aupdateVocabularyList();
+       inputText.setText("");
     }//GEN-LAST:event_enterInputActionPerformed
 
     /**
@@ -230,12 +234,31 @@ public class View extends javax.swing.JFrame {
             new View().setVisible(true);
         });
     }
+    public void aupdateVocabularyList(){
+        DefaultListModel<String> model = new DefaultListModel<>();
+        List<String> Voca = bagOfWords.getVocabularyPercentage();
+        model.addElement("Vocabulary size: " +Voca.size());
+        for (String word:Voca) {
+            model.addElement(word);
+        }
+        model.addElement("------------------");
+        for(String tag:bagOfWords.TagsCount.keySet()){
+            model.addElement(tag );//+ " count: "+bagOfWords.TagsCount.get(tag)+"/"+Voca.size());
+        }
+        VocabularyList.setModel(model);
+    }
     
     public void updateVocabularyList(){
         DefaultListModel<String> model = new DefaultListModel<>();
-        JList<String> list = new JList<>( model );
-        for (String word:bagOfWords.getVocabularyList()) {
+        Set<String> Voca = bagOfWords.getVocabularyList();
+        model.addElement("Vocabulary size: " +Voca.size());
+        for (String word:Voca) {
             model.addElement(word);
+        }
+        model.addElement("------------------");
+        model.addElement("Tags count: " + Voca.size());
+        for(String tag:bagOfWords.TagsCount.keySet()){
+            model.addElement(tag );//+ " count: "+bagOfWords.TagsCount.get(tag)+"/"+Voca.size());
         }
         VocabularyList.setModel(model);
     }
