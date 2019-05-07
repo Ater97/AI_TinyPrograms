@@ -27,19 +27,26 @@ public class Word {
     }
     
     public void setTag(String tag){
-        if(!Percentages.contains(tag)){
+        LabelPercentage tempPercentage = exists(tag);
+        if(tempPercentage == null){
             Percentages.add(new LabelPercentage(tag,1,1));
         }
         else{
-            Integer index = Percentages.indexOf(tag);
-            LabelPercentage lp = Percentages.get(index);
-            int tagcount = Percentages.size();
-            lp.increaseOccurrences();
-            lp.TagPercentage = lp.Occurrences/tagcount;
-            Percentages.set(index, lp);
+            Integer index = Percentages.indexOf(tempPercentage);
+            //LabelPercentage lp = Percentages.get(index);
+            //int tagcount = Percentages.size() + 1;
+            tempPercentage.increaseOccurrences();
+            //tempPercentage.TagPercentage = tempPercentage.Occurrences/tagcount;
+            Percentages.set(index, tempPercentage);
         }    
     }
-    
+    public LabelPercentage exists(String tag){
+        for(LabelPercentage percentage: Percentages){
+            if(percentage.LabelName.equals(tag))
+                return percentage;
+        }
+        return null;
+    }
     public double getGreaterProbability(){
         double prob = 0;
         for (LabelPercentage Percentage : Percentages) {
@@ -59,6 +66,17 @@ public class Word {
         return tag;
     }
     
+    public void updateStats(int tagsCount){
+        for(LabelPercentage tempPercentage:Percentages){
+        Integer index = Percentages.indexOf(tempPercentage);
+        //LabelPercentage lp = Percentages.get(index);
+        int tagcount = Percentages.size();
+        tempPercentage.increaseOccurrences();
+        tempPercentage.TagPercentage = tempPercentage.Occurrences/tagcount;
+        Percentages.set(index, tempPercentage);
+        }
+
+    }
 }
 class LabelPercentage{
     public String LabelName;

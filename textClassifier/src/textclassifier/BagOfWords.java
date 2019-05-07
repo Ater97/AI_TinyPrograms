@@ -52,15 +52,22 @@ public class BagOfWords {
                     checkNewWord(tempWord, tag);
                     checkTag(tag);
                 }
+            }   
             }
-            
-        }
+            UpdateStats();
         } catch (Exception e) {
             //Report Wrong file
         }
-        
-        
+
     }
+    public void UpdateStats(){
+        for(String word:Words.keySet()){
+            Word w = Words.get(word);
+            w.updateStats(TagsCount.size());
+            Words.put(word, w);
+        }
+    }
+    
     public Set<String> getVocabularyList(){
        return  Words.keySet();
     }
