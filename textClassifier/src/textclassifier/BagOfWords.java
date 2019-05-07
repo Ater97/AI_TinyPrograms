@@ -26,7 +26,8 @@ public class BagOfWords {
     
     public void setNewFile(File file) throws IOException{
         List<String> lines = Parser.ParseInputGetLines(file);    
-        for (String line:lines) {
+        try {
+            for (String line:lines) {
             String left, tag;
             int pipePosition = line.indexOf('|');
             left = line.substring(0, pipePosition).trim().toLowerCase();
@@ -42,6 +43,10 @@ public class BagOfWords {
             }
             checkTag(tag);
         }
+        } catch (Exception e) {
+            //Report Wrong file
+        }
+        
         
     }
     public Set<String> getVocabularyList(){

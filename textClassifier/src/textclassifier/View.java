@@ -27,10 +27,10 @@ public class View extends javax.swing.JFrame {
     /**
      * Creates new form view
      */
-    public ControlTower Controller;
+    public BagOfWords bagOfWords;
     public View() {
         initComponents();
-        Controller = new ControlTower();
+        bagOfWords = new BagOfWords();
     }
 
     /**
@@ -176,7 +176,7 @@ public class View extends javax.swing.JFrame {
             System.out.println("File path: " + fileParse.getAbsolutePath());
             try {
                 //Load new file
-                Controller.Words.setNewFile(fileParse);
+                bagOfWords.setNewFile(fileParse);
             } catch (IOException ex) {
                 Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -234,7 +234,7 @@ public class View extends javax.swing.JFrame {
     public void updateVocabularyList(){
         DefaultListModel<String> model = new DefaultListModel<>();
         JList<String> list = new JList<>( model );
-        for (String word:Controller.Words.getVocabularyList()) {
+        for (String word:bagOfWords.getVocabularyList()) {
             model.addElement(word);
         }
         VocabularyList.setModel(model);
