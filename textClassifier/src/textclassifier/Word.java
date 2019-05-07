@@ -13,10 +13,17 @@ import java.util.List;
  */
 public class Word {
     public String WordName;
+    public int Count;
+    public String Tag;
     public List<LabelPercentage> Percentages;  //ingles 0.5, español 0.5, francés 0.0
     
-    public Word(String name){
+    public Word(String name, int count, String tag){
         this.WordName = name;
+        this.Count = count;
+        this.Tag = tag;
+    }
+    public void increseCount(){
+        Count++;
     }
 }
 class LabelPercentage{
