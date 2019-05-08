@@ -182,7 +182,7 @@ public class View extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
             }
-            updateVocabularyList();
+            aupdateVocabularyList();
         }
         else{
             filePaht.setText("[!] Error, the file didn't load correctly");

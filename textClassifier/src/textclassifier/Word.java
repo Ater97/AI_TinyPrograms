@@ -66,13 +66,13 @@ public class Word {
         return tag;
     }
     
-    public void updateStats(int tagsCount){
+    public void updateStats(double tagsCount){
         for(LabelPercentage tempPercentage:Percentages){
         Integer index = Percentages.indexOf(tempPercentage);
         //LabelPercentage lp = Percentages.get(index);
-        int tagcount = Percentages.size();
-        tempPercentage.increaseOccurrences();
-        tempPercentage.TagPercentage = tempPercentage.Occurrences/tagcount;
+        //int tagcount = Percentages.size();
+        //tempPercentage.increaseOccurrences();
+        tempPercentage.TagPercentage = tempPercentage.Occurrences/tagsCount;
         Percentages.set(index, tempPercentage);
         }
 

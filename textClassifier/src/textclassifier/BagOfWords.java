@@ -61,11 +61,20 @@ public class BagOfWords {
 
     }
     public void UpdateStats(){
+        Integer count =getTagsTotalCount();
         for(String word:Words.keySet()){
             Word w = Words.get(word);
-            w.updateStats(TagsCount.size());
+            w.updateStats(count);
             Words.put(word, w);
         }
+    }
+    public int getTagsTotalCount(){
+        Integer count =0;
+        for(String tag:TagsCount.keySet()){
+            Integer i = TagsCount.get(tag);
+            count += i;
+        }
+        return count;
     }
     
     public Set<String> getVocabularyList(){
