@@ -17,6 +17,7 @@ import java.util.ArrayList;
  */
 public class SyntacticAnalyzer {
         
+    //split input per line
     public ArrayList<String> ParseInputGetLines(File file) throws FileNotFoundException, IOException{
         ArrayList<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {  

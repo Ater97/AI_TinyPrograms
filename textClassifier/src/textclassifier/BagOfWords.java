@@ -19,9 +19,9 @@ import java.util.Set;
  * @author sorantes
  */
 public class BagOfWords {
-    private HashMap<String, Word> Words = new HashMap<>();
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
-    public HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count
+    private HashMap<String, Word> Words = new HashMap<>(); 
+    public HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
 
     /**Calculate probabilities*/
     public void Cold(){
@@ -60,6 +60,7 @@ public class BagOfWords {
         }
 
     }
+    //Update percentages of all the words in the Dictionary
     public void UpdateStats(){
         Integer count =getTagsTotalCount();
         for(String word:Words.keySet()){
@@ -68,6 +69,7 @@ public class BagOfWords {
             Words.put(word, w);
         }
     }
+    //Get the total number of terms in the universe
     public int getTagsTotalCount(){
         Integer count =0;
         for(String tag:TagsCount.keySet()){
@@ -76,10 +78,11 @@ public class BagOfWords {
         }
         return count;
     }
-    
+    //get a set of the words to display on the view
     public Set<String> getVocabularyList(){
        return  Words.keySet();
     }
+    //get a list of words with their highest probability tag
     public List<String>getVocabularyPercentage(){
         List<String> displaylst = new ArrayList<>();
          for (String word:Words.keySet()) {
@@ -98,6 +101,7 @@ public class BagOfWords {
             Words.put(word, tempWord);
         }
     }
+    //add new taf or increase the counter
     public void checkTag(String tag){
         Integer i = TagsCount.get(tag);
         if (i == null)

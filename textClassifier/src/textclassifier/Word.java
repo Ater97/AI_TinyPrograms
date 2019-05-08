@@ -25,21 +25,18 @@ public class Word {
     public void increseCount(){
         Count++;
     }
-    
+    //add new taf or increase the counter
     public void setTag(String tag){
         LabelPercentage tempPercentage = exists(tag);
-        if(tempPercentage == null){
+        if(tempPercentage == null)
             Percentages.add(new LabelPercentage(tag,1,1));
-        }
         else{
             Integer index = Percentages.indexOf(tempPercentage);
-            //LabelPercentage lp = Percentages.get(index);
-            //int tagcount = Percentages.size() + 1;
             tempPercentage.increaseOccurrences();
-            //tempPercentage.TagPercentage = tempPercentage.Occurrences/tagcount;
             Percentages.set(index, tempPercentage);
         }    
     }
+    //Check if a LabelPercentage exists 
     public LabelPercentage exists(String tag){
         for(LabelPercentage percentage: Percentages){
             if(percentage.LabelName.equals(tag))
@@ -47,6 +44,7 @@ public class Word {
         }
         return null;
     }
+    //highest probability 
     public double getGreaterProbability(){
         double prob = 0;
         for (LabelPercentage Percentage : Percentages) {
@@ -55,6 +53,7 @@ public class Word {
         }
         return prob;
     }
+    //get highest probability tag for display
     public String getGreaterTagProbability(){
         double prob = 0;
         String tag ="";
@@ -65,17 +64,13 @@ public class Word {
         }
         return tag;
     }
-    
+    //Update all the percentages of the word
     public void updateStats(double tagsCount){
         for(LabelPercentage tempPercentage:Percentages){
-        Integer index = Percentages.indexOf(tempPercentage);
-        //LabelPercentage lp = Percentages.get(index);
-        //int tagcount = Percentages.size();
-        //tempPercentage.increaseOccurrences();
-        tempPercentage.TagPercentage = tempPercentage.Occurrences/tagsCount;
-        Percentages.set(index, tempPercentage);
+            Integer index = Percentages.indexOf(tempPercentage);
+            tempPercentage.TagPercentage = tempPercentage.Occurrences/tagsCount;
+            Percentages.set(index, tempPercentage);
         }
-
     }
 }
 class LabelPercentage{

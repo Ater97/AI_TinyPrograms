@@ -47,7 +47,7 @@ public class View extends javax.swing.JFrame {
 
         ChooseFile = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        TextArea1 = new javax.swing.JTextArea();
+        Console = new javax.swing.JTextArea();
         filePaht = new javax.swing.JTextField();
         inputText = new javax.swing.JTextField();
         enterInput = new javax.swing.JButton();
@@ -56,6 +56,7 @@ public class View extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        Reset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,9 +67,9 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        TextArea1.setColumns(20);
-        TextArea1.setRows(5);
-        jScrollPane2.setViewportView(TextArea1);
+        Console.setColumns(20);
+        Console.setRows(5);
+        jScrollPane2.setViewportView(Console);
 
         filePaht.setEditable(false);
         filePaht.setText("fiie....");
@@ -102,6 +103,13 @@ public class View extends javax.swing.JFrame {
 
         jLabel3.setText("Data:");
 
+        Reset.setText("Reset");
+        Reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,7 +124,9 @@ public class View extends javax.swing.JFrame {
                             .addComponent(enterInput, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(filePaht)
-                                .addGap(76, 76, 76))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Reset)))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -126,8 +136,8 @@ public class View extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                            .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,8 +145,9 @@ public class View extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ChooseFile)
-                    .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Reset))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
@@ -200,6 +211,15 @@ public class View extends javax.swing.JFrame {
        aupdateVocabularyList();
        inputText.setText("");
     }//GEN-LAST:event_enterInputActionPerformed
+
+    private void ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetActionPerformed
+        // TODO add your handling code here:
+        bagOfWords = new BagOfWords();
+        inputText.setText("");
+        DefaultListModel<String> model = new DefaultListModel<>();
+        VocabularyList.setModel(model);
+        Console.setText("");
+    }//GEN-LAST:event_ResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -266,7 +286,8 @@ public class View extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ChooseFile;
-    private javax.swing.JTextArea TextArea1;
+    private javax.swing.JTextArea Console;
+    private javax.swing.JButton Reset;
     private javax.swing.JList<String> VocabularyList;
     private javax.swing.JButton enterInput;
     private javax.swing.JTextField filePaht;
