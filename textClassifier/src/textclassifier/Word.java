@@ -70,15 +70,28 @@ public class Word {
     public void updateStats(double tagsCount){
         for(LabelPercentage tempPercentage:Percentages){
             Integer index = Percentages.indexOf(tempPercentage);
-            tempPercentage.TagPercentage = (tempPercentage.Occurrences/tagsCount); //Term Frequency
+            
+            double IDf = Math.log((tagsCount/tempPercentage.Occurrences));//TF-IDF
+            double TF_IDF = (tempPercentage.Occurrences/tagsCount) -IDf;
+            
+            tempPercentage.TagPercentage = (tempPercentage.Occurrences/tagsCount); //Term Frequency on the universe
+            tempPercentage.TagPercentage = (tempPercentage.Occurrences/getTagsTotalCount()); //Term Frequency on the tags of the word
             Percentages.set(index, tempPercentage);
         }
+    }
+    public double getTagsTotalCount(){
+        double count =0;
+        for(LabelPercentage tempPercentage:Percentages){
+            double i = tempPercentage.Occurrences;
+            count += i;
+        }
+        return count;
     }
 }
 class LabelPercentage{
     public final String LabelName;
     public double TagPercentage; //Actually Term Frequency
-    public int Occurrences;
+    public double Occurrences;
     public LabelPercentage(String name, int count, double percentage){
         this.LabelName = name;
         this.Occurrences = count;

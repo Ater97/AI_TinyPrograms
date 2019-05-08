@@ -140,10 +140,21 @@ public class BagOfWords {
        return  Words.keySet();
     }
     //get a list of words with their highest probability tag
-    public List<String>getVocabularyPercentage(){
+    public List<String> getVocabularyPercentage(){
         List<String> displaylst = new ArrayList<>();
          for (String word:Words.keySet()) {
-            displaylst.add(word + " " + Words.get(word).getGreaterProbability() +  " "+ Words.get(word).getGreaterTagProbability());
+            //displaylst.add(String.format("P(%s | %s) = %f ",word,Words.get(word).getGreaterTagProbability(),Words.get(word).getGreaterProbability()));
+            displaylst.add(String.format("\"%s\" has %f probability to be %s",word,Words.get(word).getGreaterProbability(),Words.get(word).getGreaterTagProbability()));
+            //displaylst.add(word + " " + Words.get(word).getGreaterProbability() +  " "+ Words.get(word).getGreaterTagProbability());
+        }
+        return displaylst;
+    }
+    //get a list of tags with their probability 
+    public List<String> getTagPercentage(){
+        //String.format("P(%s) = %s/%s"
+        List<String> displaylst = new ArrayList<>();
+         for (String tag:TagsCount.keySet()) {
+            displaylst.add(String.format("P(%s) = %d/%d",tag,TagsCount.get(tag),getTagsTotalCount()));
         }
         return displaylst;
     }
