@@ -20,45 +20,102 @@ import java.util.Set;
  */
 public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
-    private HashMap<String, Word> Words = new HashMap<>(); 
-    public HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
+    private final HashMap<String, Word> Words = new HashMap<>(); 
+    public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
 
     /**Calculate probabilities*/
     public void Cold(){
         
     }
-    public void AddPhrase(String newLineStr){
-        
-    }
     public void EditWords(){
         
     }
-    
+    /**Add new phrase to the dictionary*/
+    public String AddPhrase(String newLineStr){
+        if (!newLineStr.equals("")){
+            if (!newLineStr.contains("|")){
+                //report wrong format
+                System.out.println("[!] Error, the file didn't have the right format.");
+                return "[!] Error, the inout didn't have the right format. <word> | <tag>";
+            }
+            else {
+                String left, tag;
+                int pipePos = newLineStr.indexOf('|');
+                left = newLineStr.substring(0, pipePos).trim();
+                tag = newLineStr.substring(pipePos + 1, newLineStr.length()).trim();
+                if (left.isEmpty() | tag.isEmpty()){
+                    //report wrong format
+                    System.out.println("[!] Error, the file didn't have the right format.");
+                    return "[!] Error, the inout didn't have the right format. <word> | <tag>";
+                }
+                else{
+                    List<String> tempWords = Arrays.asList(left.split(" ")) ;
+                    for(String tempWord:tempWords){
+                        checkNewWord(tempWord, tag);
+                        checkTag(tag);
+                    }
+                }   
+                UpdateStats();
+                return "[+] Word successfully loaded. ";
+            }
+        }
+        return "[!] Empty input.";
+    }
     /**Parser*/
-    public void setNewFile(File file) throws IOException{
-        List<String> lines = Parser.ParseInputGetLines(file);    
-        try {
-            for (String line:lines) {
-            String left, tag;
-            int pipePosition = line.indexOf('|');
-            left = line.substring(0, pipePosition).trim().toLowerCase();
-            tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase();
-            if (left.isEmpty() | tag.isEmpty()){
+    public String setNewFile(File file) throws IOException{
+        List<String> lines = Parser.ParseInputGetLines(file);   
+        String extension = Parser.getFileExtension(file);
+        if(extension.equals(".csv"))
+            try {
+                for (String line:lines) {
+                    String left, tag;
+                    int pipePosition = line.indexOf(',');
+                    left = line.substring(0, pipePosition).trim().toLowerCase();
+                    tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase();
+                    if (left.isEmpty() | tag.isEmpty()){
+                        //Report Wrong file
+                        return "[!] Error, the file didn't have the right format.";
+                    }
+                    else{
+                        List<String> tempWords = Arrays.asList(left.split(" ")) ;
+                        for(String tempWord:tempWords){
+                            checkNewWord(tempWord, tag);
+                            checkTag(tag);
+                        }
+                    }   
+                }
+                UpdateStats();
+            } catch (Exception e) {
                 //Report Wrong file
             }
-            else{
-                List<String> tempWords = Arrays.asList(left.split(" ")) ;
-                for(String tempWord:tempWords){
-                    checkNewWord(tempWord, tag);
-                    checkTag(tag);
+        else
+            try {
+                for (String line:lines) {
+                    String left, tag;
+                    int pipePosition = line.indexOf('|');
+                    left = line.substring(0, pipePosition).trim().toLowerCase();
+                    tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase();
+                    if (left.isEmpty() | tag.isEmpty()){
+                        //Report Wrong file
+                        System.out.println("[!] Error, the file didn't have the right format");
+                        return "[!] Error, the file didn't have the right format.";
+                    }
+                    else{
+                        List<String> tempWords = Arrays.asList(left.split(" ")) ;
+                        for(String tempWord:tempWords){
+                            checkNewWord(tempWord, tag);
+                            checkTag(tag);
+                        }
+                    }   
                 }
-            }   
+                UpdateStats();
+                return "[+] File successfully loaded.";
+            } catch (Exception e) {
+                //Report Wrong file
+                System.out.println("[!] Error, wrong file");
+                return "[!] Error, wrong file.";
             }
-            UpdateStats();
-        } catch (Exception e) {
-            //Report Wrong file
-        }
-
+        return "";//bad programming i know i know
     }
     //Update percentages of all the words in the Dictionary
     public void UpdateStats(){

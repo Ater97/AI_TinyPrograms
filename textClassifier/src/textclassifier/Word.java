@@ -13,7 +13,7 @@ import java.util.List;
  * @author sorantes
  */
 public class Word {
-    public String WordName;
+    public final String WordName;
     public int Count;
     public List<LabelPercentage> Percentages= new ArrayList<>();  //ingles 0.5, español 0.5, francés 0.0
     
@@ -58,24 +58,26 @@ public class Word {
         double prob = 0;
         String tag ="";
         for (LabelPercentage Percentage : Percentages) {
-            if(Percentage.TagPercentage > prob){
+            if(Percentage.TagPercentage == prob)
+                tag = tag + " equiprobable "+ Percentage.LabelName;
+            else if(Percentage.TagPercentage > prob){
                 prob = Percentage.TagPercentage;
                 tag = Percentage.LabelName;}
         }
         return tag;
     }
-    //Update all the percentages of the word
+    //Update all the percentages of the word (Calculate Term Frequency!)
     public void updateStats(double tagsCount){
         for(LabelPercentage tempPercentage:Percentages){
             Integer index = Percentages.indexOf(tempPercentage);
-            tempPercentage.TagPercentage = tempPercentage.Occurrences/tagsCount;
+            tempPercentage.TagPercentage = (tempPercentage.Occurrences/tagsCount); //Term Frequency
             Percentages.set(index, tempPercentage);
         }
     }
 }
 class LabelPercentage{
-    public String LabelName;
-    public double TagPercentage;
+    public final String LabelName;
+    public double TagPercentage; //Actually Term Frequency
     public int Occurrences;
     public LabelPercentage(String name, int count, double percentage){
         this.LabelName = name;
@@ -83,9 +85,6 @@ class LabelPercentage{
         this.TagPercentage = percentage;
     }
     
-    public void setLabelName(String name){
-        this.LabelName = name;
-    }
     public void setPercentage(double percentage){
         this.TagPercentage = percentage;
     }

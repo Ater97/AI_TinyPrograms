@@ -50,13 +50,14 @@ public class View extends javax.swing.JFrame {
         Console = new javax.swing.JTextArea();
         filePaht = new javax.swing.JTextField();
         inputText = new javax.swing.JTextField();
-        enterInput = new javax.swing.JButton();
+        AddPhrase = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         VocabularyList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         Reset = new javax.swing.JButton();
+        EstimateProbability = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,10 +80,10 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        enterInput.setText("Enter");
-        enterInput.addActionListener(new java.awt.event.ActionListener() {
+        AddPhrase.setText("Add Phrase");
+        AddPhrase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterInputActionPerformed(evt);
+                AddPhraseActionPerformed(evt);
             }
         });
 
@@ -110,6 +111,8 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        EstimateProbability.setText("Estimate Probability");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,24 +123,33 @@ public class View extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ChooseFile)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(enterInput, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(filePaht)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Reset)))
-                        .addContainerGap())
+                        .addComponent(filePaht)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Reset))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(AddPhrase)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(EstimateProbability)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,20 +159,22 @@ public class View extends javax.swing.JFrame {
                     .addComponent(ChooseFile)
                     .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Reset))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(enterInput))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AddPhrase)
+                            .addComponent(EstimateProbability))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 829, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 896, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
@@ -177,7 +191,9 @@ public class View extends javax.swing.JFrame {
         JFrame parentFrame = new JFrame();
         FileNameExtensionFilter filterfrag = new FileNameExtensionFilter(".frag", "frag");
         FileNameExtensionFilter filtertxt = new FileNameExtensionFilter(".txt", "txt");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
         JFileChooser fileChooser = new JFileChooser();
+        //fileChooser.setFileFilter(filter); //Only txt ********************************************
         fileChooser.setDialogTitle("Specify a file");  
         fileChooser.addChoosableFileFilter(filterfrag);
         fileChooser.addChoosableFileFilter(filtertxt);
@@ -189,7 +205,8 @@ public class View extends javax.swing.JFrame {
             System.out.println("File path: " + fileParse.getAbsolutePath());
             try {
                 //Load new file
-                bagOfWords.setNewFile(fileParse);
+                String logmessage = bagOfWords.setNewFile(fileParse);
+                Log(logmessage);
             } catch (IOException ex) {
                 Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -205,12 +222,13 @@ public class View extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_filePahtActionPerformed
 
-    private void enterInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterInputActionPerformed
+    private void AddPhraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPhraseActionPerformed
         // Load new words
-       bagOfWords.AddPhrase(inputText.getText());
-       aupdateVocabularyList();
+       String logmessage  = bagOfWords.AddPhrase(inputText.getText());
+        Log(logmessage);
        inputText.setText("");
-    }//GEN-LAST:event_enterInputActionPerformed
+       aupdateVocabularyList();
+    }//GEN-LAST:event_AddPhraseActionPerformed
 
     private void ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetActionPerformed
         // TODO add your handling code here:
@@ -218,7 +236,8 @@ public class View extends javax.swing.JFrame {
         inputText.setText("");
         DefaultListModel<String> model = new DefaultListModel<>();
         VocabularyList.setModel(model);
-        Console.setText("");
+        Console.setText("");//bad programming i know i know
+        filePaht.setText("file path...");
     }//GEN-LAST:event_ResetActionPerformed
 
     /**
@@ -254,6 +273,7 @@ public class View extends javax.swing.JFrame {
             new View().setVisible(true);
         });
     }
+    //show tags
     public void aupdateVocabularyList(){
         DefaultListModel<String> model = new DefaultListModel<>();
         List<String> Voca = bagOfWords.getVocabularyPercentage();
@@ -262,12 +282,14 @@ public class View extends javax.swing.JFrame {
             model.addElement(word);
         }
         model.addElement("------------------");
-        for(String tag:bagOfWords.TagsCount.keySet()){
-            model.addElement(tag );//+ " count: "+bagOfWords.TagsCount.get(tag)+"/"+Voca.size());
+        Set<String> tags = bagOfWords.TagsCount.keySet();
+        model.addElement("Tags count: " + tags.size() );
+        for(String tag:tags){
+            model.addElement(tag );
         }
         VocabularyList.setModel(model);
     }
-    
+    //dont show tags
     public void updateVocabularyList(){
         DefaultListModel<String> model = new DefaultListModel<>();
         Set<String> Voca = bagOfWords.getVocabularyList();
@@ -276,20 +298,26 @@ public class View extends javax.swing.JFrame {
             model.addElement(word);
         }
         model.addElement("------------------");
-        model.addElement("Tags count: " + Voca.size());
         for(String tag:bagOfWords.TagsCount.keySet()){
             model.addElement(tag );//+ " count: "+bagOfWords.TagsCount.get(tag)+"/"+Voca.size());
         }
         VocabularyList.setModel(model);
     }
-    
+    //control log messages
+    public void Log(String logmessage) {
+        if(Console.getText().equals(""))
+            Console.setText(logmessage);
+        else
+            Console.setText(Console.getText() +"\n" +logmessage);
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AddPhrase;
     private javax.swing.JButton ChooseFile;
     private javax.swing.JTextArea Console;
+    private javax.swing.JButton EstimateProbability;
     private javax.swing.JButton Reset;
     private javax.swing.JList<String> VocabularyList;
-    private javax.swing.JButton enterInput;
     private javax.swing.JTextField filePaht;
     private javax.swing.JTextField inputText;
     private javax.swing.JLabel jLabel1;
