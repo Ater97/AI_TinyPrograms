@@ -23,13 +23,29 @@ public class BagOfWords {
     private final HashMap<String, Word> Words = new HashMap<>(); 
     public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
 
+    //public void EditWords(){     }
+    
+    int truePositive = 0, falsePositive = 0, falseNegative = 0, correctClassification = 0, incorrectClassification = 0;
     /**Calculate probabilities*/
-    public void Cold(){
+    public String EstimateProbability(String inputLine){
+        ArrayList<String> inputWordslst = new ArrayList<String>(Arrays.asList(inputLine.split(",")));
         
+        return " ";
     }
-    public void EditWords(){
+    /**Calculate individual word probabilities and get the highest*/
+    public double CalculateWordProbability(String inputWord){
         
+        
+        double accuracy = correctClassification/(correctClassification + incorrectClassification + 0.0);
+        double precision = truePositive/(truePositive+falsePositive+0.0);
+        double recall = truePositive/(truePositive+falseNegative+0.0);
+        double fscore = 2*precision*recall/(precision+recall);
+        System.out.println("Accuracy="+accuracy+"\nPrecision= "+precision+" Recall="+recall+" F-Score="+fscore);
+        return 0;
     }
+    
+
+    
     /**Add new phrase to the dictionary*/
     public String AddPhrase(String newLineStr){
         if (!newLineStr.equals("")){

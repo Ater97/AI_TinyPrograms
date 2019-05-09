@@ -22,6 +22,24 @@ public class Word {
         this.Count = count;
         setTag(tag);
     }
+    private int truePositive = 0, falsePositive = 0, falseNegative = 0, correctClassification = 0, incorrectClassification = 0;
+    /**Calculate individual word probabilities and get the highest*/
+    public double CalculateWordProbability(){
+        
+        
+        double accuracy = correctClassification/(correctClassification + incorrectClassification + 0.0);
+        double precision = truePositive/(truePositive+falsePositive+0.0);
+        double recall = truePositive/(truePositive+falseNegative+0.0);
+        double fscore = 2*precision*recall/(precision+recall);
+        System.out.println("Accuracy="+accuracy+"\nPrecision= "+precision+" Recall="+recall+" F-Score="+fscore);
+        
+        
+        return 0;
+    }
+    
+    
+    
+    
     public void increseCount(){
         Count++;
     }
