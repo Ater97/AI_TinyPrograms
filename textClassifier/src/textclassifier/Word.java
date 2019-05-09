@@ -22,24 +22,7 @@ public class Word {
         this.Count = count;
         setTag(tag);
     }
-    private int truePositive = 0, falsePositive = 0, falseNegative = 0, correctClassification = 0, incorrectClassification = 0;
-    /**Calculate individual word probabilities and get the highest*/
-    public double CalculateWordProbability(){
-        
-        
-        double accuracy = correctClassification/(correctClassification + incorrectClassification + 0.0);
-        double precision = truePositive/(truePositive+falsePositive+0.0);
-        double recall = truePositive/(truePositive+falseNegative+0.0);
-        double fscore = 2*precision*recall/(precision+recall);
-        System.out.println("Accuracy="+accuracy+"\nPrecision= "+precision+" Recall="+recall+" F-Score="+fscore);
-        
-        
-        return 0;
-    }
-    
-    
-    
-    
+
     public void increseCount(){
         Count++;
     }
@@ -77,7 +60,7 @@ public class Word {
         String tag ="";
         for (LabelPercentage Percentage : Percentages) {
             if(Percentage.TagPercentage == prob)
-                tag = tag + " equiprobable "+ Percentage.LabelName;
+                tag += " equiprobable " + Percentage.LabelName;
             else if(Percentage.TagPercentage > prob){
                 prob = Percentage.TagPercentage;
                 tag = Percentage.LabelName;}
@@ -88,9 +71,6 @@ public class Word {
     public void updateStats(double tagsCount){
         for(LabelPercentage tempPercentage:Percentages){
             Integer index = Percentages.indexOf(tempPercentage);
-            
-            double IDf = Math.log((tagsCount/tempPercentage.Occurrences));//TF-IDF
-            double TF_IDF = (tempPercentage.Occurrences/tagsCount) -IDf;
             
             tempPercentage.TagPercentage = (tempPercentage.Occurrences/tagsCount); //Term Frequency on the universe
             tempPercentage.TagPercentage = (tempPercentage.Occurrences/getTagsTotalCount()); //Term Frequency on the tags of the word

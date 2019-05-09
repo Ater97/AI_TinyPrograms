@@ -187,14 +187,11 @@ public class View extends javax.swing.JFrame {
 
         File fileParse = null;
         JFrame parentFrame = new JFrame();
-        FileNameExtensionFilter filterfrag = new FileNameExtensionFilter(".frag", "frag");
-        FileNameExtensionFilter filtertxt = new FileNameExtensionFilter(".txt", "txt");
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", ".txt", "txt",".frag", "frag", "text");
         JFileChooser fileChooser = new JFileChooser();
-        //fileChooser.setFileFilter(filter); //Only txt ********************************************
+        fileChooser.setFileFilter(filter); 
         fileChooser.setDialogTitle("Specify a file");  
-        fileChooser.addChoosableFileFilter(filterfrag);
-        fileChooser.addChoosableFileFilter(filtertxt);
+        fileChooser.addChoosableFileFilter(filter);
         int userSelection = fileChooser.showSaveDialog(parentFrame);
         
         if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -207,6 +204,7 @@ public class View extends javax.swing.JFrame {
                 Log(logmessage);
             } catch (IOException ex) {
                 Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("[-] Unexpected error");
             }
             aupdateVocabularyList();
         }
@@ -223,7 +221,7 @@ public class View extends javax.swing.JFrame {
     private void AddPhraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPhraseActionPerformed
         // Load new words
        String logmessage  = bagOfWords.AddPhrase(inputText.getText());
-        Log(logmessage);
+       Log(logmessage);
        inputText.setText("");
        aupdateVocabularyList();
     }//GEN-LAST:event_AddPhraseActionPerformed
@@ -239,7 +237,8 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_ResetActionPerformed
 
     private void EstimateProbabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EstimateProbabilityActionPerformed
-        bagOfWords.EstimateProbability(inputText.getText());
+        String logmessage = bagOfWords.EstimateProbability(inputText.getText());
+        Log(logmessage);
         //inputText.setText("");
     }//GEN-LAST:event_EstimateProbabilityActionPerformed
 
@@ -311,7 +310,7 @@ public class View extends javax.swing.JFrame {
         if(Console.getText().equals(""))
             Console.setText(logmessage);
         else
-            Console.setText(Console.getText() +"\n" +logmessage);
+            Console.setText(Console.getText() + "\n\n" + logmessage);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
