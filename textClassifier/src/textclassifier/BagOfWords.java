@@ -5,6 +5,7 @@
  */
 package textclassifier;
 
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,27 +23,75 @@ public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
     private final HashMap<String, Word> Words = new HashMap<>(); 
     public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
-
+    public Calulation Caltulate;
     //public void EditWords(){     }
     
-    double truePositive = 0, falsePositive = 0, falseNegative = 0, correctClassification = 0, incorrectClassification = 0, smoother =0;
+    public String EstimateProbabilityLaplace(String inputLine){
+        inputLine = inputLine.toLowerCase().trim();
+        if(TagsCount.size()<1)
+            return "[!] It's necessary to train it first.";
+        else if(inputLine.equals(""))
+            return "[!] Empty input."; 
+        
+        Caltulate = new Calulation(Words.size(), 0, TagsCount.size());//totalWordscount,  smother,  totalTagsCount
+        ArrayList<String> inputWordslst = new ArrayList<>(Arrays.asList(inputLine.split(" ")));
+        HashMap<String, Double> TagsProduct = new HashMap<>(); // product of tags
+        double tempProduct =0, percentage =0;
+        for(String tagName:TagsCount.keySet()){
+            percentage = (double)TagsCount.get(tagName)/getTagsTotalCount();
+            TagsProduct.put(tagName, percentage);
+        }
+        for(String inputWord:inputWordslst){
+            Word tempWord = Words.get(inputWord);
+            if(tempWord==null){//new word in the universe
+                for(String tag:TagsProduct.keySet()){
+                    tempProduct = Caltulate.LaplaceSmothing(0, TagsCount.get(tag));
+                    tempProduct = tempProduct * TagsProduct.get(tag);
+                    TagsProduct.put(tag, tempProduct);
+                } 
+            }
+            else
+                for(String tag: TagsCount.keySet()){
+                    tempProduct = Caltulate.LaplaceSmothing(tempWord.getTagWordOcurrences(tag), TagsCount.get(tag));
+                    tempProduct = tempProduct * TagsProduct.get(tag);
+                    TagsProduct.put(tag, tempProduct);
+                }
+        }
+        String MostLikelyTag = "";
+        double probResult = 0;
+        for(String tag:TagsProduct.keySet()){
+            if(TagsProduct.get(tag) == probResult)
+                MostLikelyTag +=  " equiprobable " + tag;
+            else if(TagsProduct.get(tag)>probResult){
+                probResult = TagsProduct.get(tag);
+                MostLikelyTag = tag;
+            }
+        }
+        return String.format("(LaplaceSmothing) \"%s\" has %f,  is probably to be %s. ", inputLine, probResult*100, MostLikelyTag);
+    }
+
     /**Calculate probabilities*/
     public String EstimateProbability(String inputLine){
         inputLine = inputLine.toLowerCase().trim();
         if(TagsCount.size()<1)
             return "[!] It's necessary to train it first.";
         else if(inputLine.equals(""))
-            return "[!] Empty input.";
+            return "[!] Empty input."; 
         ArrayList<String> inputWordslst = new ArrayList<>(Arrays.asList(inputLine.split(" ")));
         HashMap<String, Double> TagsProbability = new HashMap<>(); // Sum of probability by tag
-        
-        //Term Frequency–Inverse Document Frequency
+        double newWordProbability = 1.0/TagsCount.size(); //   1/ total Tags count
         for(String inputWord:inputWordslst){
             Word tempWord = Words.get(inputWord);
             if(tempWord==null){//new word in the universe
-            
-                
-                
+                for(String tag:TagsCount.keySet()){
+                    Double tempProb = TagsProbability.get(tag);
+                    if(tempProb==null)
+                        TagsProbability.put(tag, newWordProbability);
+                    else{
+                        tempProb += newWordProbability;
+                        TagsProbability.put(tag, tempProb);
+                    }
+                }
             }
             else{ //The word exists in the universe
                 for (int i = 0; i < tempWord.Percentages.size(); i++) {
@@ -73,11 +122,6 @@ public class BagOfWords {
         }
         
         double probResult = (MostLikelyProb/denominator)*100;
-        //double IDf = Math.log((tagsCount/tempPercentage.Occurrences));//TF-IDF
-        //double TF_IDF = (tempPercentage.Occurrences/tagsCount) -IDf;
-        
-        double idf = Math.log((0));
-        
         return String.format("\"%s\" has %.3f%%  probability to be %s.", inputLine,probResult,MostLikelyTag);
     }
     /**Add new phrase to the dictionary*/
@@ -113,7 +157,7 @@ public class BagOfWords {
         return "[!] Empty input.";
     }
     /**Parser*/
-    public String setNewFile(File file) throws IOException{
+    public String setNewFile(File file, boolean InvertFormat) throws IOException{
         List<String> lines = Parser.ParseInputGetLines(file);   
         String extension = Parser.getFileExtension(file);
         if(extension.equals(".csv"))
@@ -122,11 +166,11 @@ public class BagOfWords {
                     String left, tag;
                     int pipePosition = line.indexOf(',');
                     if(pipePosition>0){
-                    left = line.substring(0, pipePosition).trim().toLowerCase();
-                    tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase();
+                    left = line.substring(0, pipePosition).trim().toLowerCase();                //left
+                    tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase(); //right
                     if (left.isEmpty() | tag.isEmpty()){
                         //Report Wrong file
-                        return "[!] Error, the file didn't have the right format.";
+                        System.out.println("[!] Empty line (Ignored)");
                     }
                     else{
                         List<String> tempWords = Arrays.asList(left.split(" ")) ;
@@ -147,12 +191,17 @@ public class BagOfWords {
                     String left, tag;
                     int pipePosition = line.indexOf('|');
                     if(pipePosition>0){
-                        left = line.substring(0, pipePosition).trim().toLowerCase();
-                        tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase();
+                        if(InvertFormat){
+                            left = line.substring(pipePosition + 1, line.length()).trim().toLowerCase();  //rigth
+                            tag = line.substring(0, pipePosition).trim().toLowerCase();                   //left
+                        }
+                        else{
+                            left = line.substring(0, pipePosition).trim().toLowerCase();                //left
+                            tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase(); //right
+                        }
                         if (left.isEmpty() | tag.isEmpty()){
                             //Report Wrong file
-                            System.out.println("[!] Error, the file didn't have the right format");
-                            return "[!] Error, the file didn't have the right format.";
+                            System.out.println("[!] Empty line (Ignored)"); 
                         }
                         else{
                             List<String> tempWords = Arrays.asList(left.split(" ")) ;
@@ -206,10 +255,11 @@ public class BagOfWords {
     }
     //get a list of tags with their probability 
     public List<String> getTagPercentage(){
-        //String.format("P(%s) = %s/%s"
+        double percentage =0.0;
         List<String> displaylst = new ArrayList<>();
          for (String tag:TagsCount.keySet()) {
-            displaylst.add(String.format("P(%s) = %d/%d",tag,TagsCount.get(tag),getTagsTotalCount()));
+             percentage = ((double)TagsCount.get(tag)/getTagsTotalCount()) *100;
+            displaylst.add(String.format("P(%s) = %d/%d = %.3f",tag,TagsCount.get(tag),getTagsTotalCount(),percentage));//,percentage));
         }
         return displaylst;
     }

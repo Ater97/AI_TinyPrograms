@@ -85,6 +85,15 @@ public class Word {
         }
         return count;
     }
+    
+    //return tag-word occurrences
+    public double getTagWordOcurrences(String tag){
+        for (int j = 0; j < Percentages.size(); j++) {
+            if(Percentages.get(j).LabelName.equals(tag))
+                return Percentages.get(j).Occurrences;
+        }
+        return 0;
+    }
 }
 class LabelPercentage{
     public final String LabelName;
