@@ -55,6 +55,7 @@ public class View extends javax.swing.JFrame {
         Reset = new javax.swing.JButton();
         EstimateProbability = new javax.swing.JButton();
         InvertFormat = new javax.swing.JCheckBox();
+        BoolSpeacialChars = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,6 +118,13 @@ public class View extends javax.swing.JFrame {
 
         InvertFormat.setText("Invert format of the input<tag>|<word>");
 
+        BoolSpeacialChars.setText("Ignore special characters");
+        BoolSpeacialChars.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BoolSpeacialCharsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,6 +138,8 @@ public class View extends javax.swing.JFrame {
                         .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(InvertFormat)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BoolSpeacialChars)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Reset))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -163,7 +173,8 @@ public class View extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ChooseFile)
                             .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InvertFormat))
+                            .addComponent(InvertFormat)
+                            .addComponent(BoolSpeacialChars))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -198,7 +209,7 @@ public class View extends javax.swing.JFrame {
 
         File fileParse = null;
         JFrame parentFrame = new JFrame();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", ".txt", "txt",".frag", "frag", "text");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", ".txt", "txt",".frag", "frag", "text", "csv");
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(filter); 
         fileChooser.setDialogTitle("Specify a file");  
@@ -211,7 +222,7 @@ public class View extends javax.swing.JFrame {
             System.out.println("File path: " + fileParse.getAbsolutePath());
             try {
                 //Load new file
-                String logmessage = bagOfWords.setNewFile(fileParse, InvertFormat.isSelected());
+                String logmessage = bagOfWords.setNewFile(fileParse, InvertFormat.isSelected(),BoolSpeacialChars.isSelected());
                 Log(logmessage);
             } catch (IOException ex) {
                 Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
@@ -254,6 +265,10 @@ public class View extends javax.swing.JFrame {
         Log(logmessage);
         //inputText.setText("");
     }//GEN-LAST:event_EstimateProbabilityActionPerformed
+
+    private void BoolSpeacialCharsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoolSpeacialCharsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BoolSpeacialCharsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -329,6 +344,7 @@ public class View extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddPhrase;
+    private javax.swing.JCheckBox BoolSpeacialChars;
     private javax.swing.JButton ChooseFile;
     private javax.swing.JTextArea Console;
     private javax.swing.JButton EstimateProbability;

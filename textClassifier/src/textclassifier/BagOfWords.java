@@ -24,7 +24,7 @@ public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
     private final HashMap<String, Word> Words = new HashMap<>(); 
     public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
-    
+    public final String[] SpecialCharacters = {"\"", "(", ")", "_", "-", ",", "“", "?", "¿"};
     public Calulation Caltulate;
     //public void EditWords(){     }
     //double Weigh =Caltulate.WeightTermFrequency(tempWord.Count, inputWordslst.size() , TagsCount.size(),TagsCount.get(tempTag));
@@ -211,34 +211,41 @@ public class BagOfWords {
         return "[!] Empty input.";
     }
     /**Parser*/
-    public String setNewFile(File file, boolean InvertFormat) throws IOException{
+    public String setNewFile(File file, boolean InvertFormat, boolean DeleteSpecialCharactes) throws IOException{
         List<String> lines = Parser.ParseInputGetLines(file);   
         String extension = Parser.getFileExtension(file);
-        if(extension.equals(".csv"))
+        if(extension.equals(".csv")){
             try {
                 for (String line:lines) {
                     String left, tag;
-                    int pipePosition = line.indexOf(',');
+                    int pipePosition = line.indexOf('|');
                     if(pipePosition>0){
-                    left = line.substring(0, pipePosition).trim().toLowerCase();                //left
-                    tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase(); //right
-                    if (left.isEmpty() | tag.isEmpty()){
-                        //Report Wrong file
-                        System.out.println("[!] Empty line (Ignored)");
-                    }
-                    else{
-                        List<String> tempWords = Arrays.asList(left.split(" ")) ;
-                        for(String tempWord:tempWords){
-                            checkNewWord(tempWord, tag);
-                            checkTag(tag);
+                        left = line.substring(0, pipePosition).trim().toLowerCase();                //left
+                        tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase(); //right
+                        if (left.isEmpty() | tag.isEmpty()){
+                            //Report Wrong file
+                            System.out.println("[!] Empty line (Ignored)");
                         }
-                    }   }
+                        else{
+                            List<String> tempWords = Arrays.asList(left.split(" ")) ;
+                            for(String tempWord:tempWords){
+                                if(DeleteSpecialCharactes)
+                                    tempWord =DeleteSpecialChars(tempWord);
+                                
+                                checkNewWord(tempWord, tag);
+                                checkTag(tag);
+                            }
+                        }
+                    }
                 }
                 UpdateStats();
-            } catch (Exception e) {
+                return "[+] File successfully loaded.";
+           } catch (Exception e) {
                 //Report Wrong file
-                return "[-] Error, wrong file.";
+                //return "[-] Error, wrong file.";
+                System.out.println("[-] Error, wrong file.");
             }
+        }
         else
             try {
                 for (String line:lines) {
@@ -260,6 +267,9 @@ public class BagOfWords {
                         else{
                             List<String> tempWords = Arrays.asList(left.split(" ")) ;
                             for(String tempWord:tempWords){
+                                if(DeleteSpecialCharactes)
+                                    tempWord =DeleteSpecialChars(tempWord);
+                                
                                 checkNewWord(tempWord, tag);
                                 checkTag(tag);
                             }
@@ -303,7 +313,7 @@ public class BagOfWords {
         Map<String, Object> copy = new TreeMap<>(Words);
          for (String word:copy.keySet()) {
             //displaylst.add(String.format("P(%s | %s) = %f ",word,Words.get(word).getGreaterTagProbability(),Words.get(word).getGreaterProbability()));
-            displaylst.add(String.format("\"%s\" has %.3f%% probability to be %s",word, Words.get(word).getGreaterProbability()*100, Words.get(word).getGreaterTagProbability()));
+            displaylst.add(String.format("%s has %.3f%% probability to be %s",word, Words.get(word).getGreaterProbability()*100, Words.get(word).getGreaterTagProbability()));
             //displaylst.add(word + " " + Words.get(word).getGreaterProbability() +  " "+ Words.get(word).getGreaterTagProbability());
         }
         return displaylst;
@@ -339,5 +349,12 @@ public class BagOfWords {
             i++;
             TagsCount.put(tag, i);
         }
+    }
+    
+    public String DeleteSpecialChars(String originalString){
+        for (int i = 0; i < SpecialCharacters.length; i++) {
+            originalString = originalString.replace(SpecialCharacters[i], "");
+        }
+        return originalString;
     }
 }

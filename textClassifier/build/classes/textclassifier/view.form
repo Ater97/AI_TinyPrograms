@@ -32,6 +32,8 @@
                       <Component id="filePaht" min="-2" pref="543" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="InvertFormat" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="BoolSpeacialChars" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="Reset" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -78,6 +80,7 @@
                           <Component id="ChooseFile" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="filePaht" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="InvertFormat" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="BoolSpeacialChars" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -213,6 +216,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Invert format of the input&lt;tag&gt;|&lt;word&gt;"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="BoolSpeacialChars">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ignore special characters"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BoolSpeacialCharsActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
