@@ -8,5 +8,5 @@ Bag of words implementation
 * https://stats.stackexchange.com/questions/108797/in-naive-bayes-why-bother-with-laplace-smoothing-when-we-have-unknown-words-in/108802
 
 Dataset:
-https://storage.googleapis.com/tensorflow-workshop-examples/stack-overflow-data.csv
-https://www.enchantedlearning.com/wordlist/geography.shtml
+* https://storage.googleapis.com/tensorflow-workshop-examples/stack-overflow-data.csv
+* https://www.enchantedlearning.com/wordlist/geography.shtml
