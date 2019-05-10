@@ -56,6 +56,7 @@ public class View extends javax.swing.JFrame {
         EstimateProbability = new javax.swing.JButton();
         InvertFormat = new javax.swing.JCheckBox();
         BoolSpeacialChars = new javax.swing.JCheckBox();
+        BooleanIgnoreNumbers = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,6 +126,8 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        BooleanIgnoreNumbers.setText("Ignore numbers");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -135,12 +138,14 @@ public class View extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ChooseFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(InvertFormat)
+                        .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(BoolSpeacialChars)
+                        .addGap(18, 18, 18)
+                        .addComponent(BooleanIgnoreNumbers)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(InvertFormat)
+                        .addGap(18, 18, 18)
                         .addComponent(Reset))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -167,19 +172,21 @@ public class View extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ChooseFile)
                             .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InvertFormat)
-                            .addComponent(BoolSpeacialChars))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(BoolSpeacialChars)
+                            .addComponent(BooleanIgnoreNumbers))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Reset)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Reset)
+                            .addComponent(InvertFormat))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -222,7 +229,7 @@ public class View extends javax.swing.JFrame {
             System.out.println("File path: " + fileParse.getAbsolutePath());
             try {
                 //Load new file
-                String logmessage = bagOfWords.setNewFile(fileParse, InvertFormat.isSelected(),BoolSpeacialChars.isSelected());
+                String logmessage = bagOfWords.setNewFile(fileParse, InvertFormat.isSelected(),BoolSpeacialChars.isSelected(),BooleanIgnoreNumbers.isSelected());
                 Log(logmessage);
             } catch (IOException ex) {
                 Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
@@ -261,7 +268,7 @@ public class View extends javax.swing.JFrame {
     private void EstimateProbabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EstimateProbabilityActionPerformed
         String logmessage = "[+] " +bagOfWords.EstimateProbability(inputText.getText());
         logmessage +="\n" + bagOfWords.EstimateProbabilityLaplace(inputText.getText());
-        logmessage +="\n" + bagOfWords.EstimateProbabilityTFIDF(inputText.getText());
+        //logmessage +="\n" + bagOfWords.EstimateProbabilityTFIDF(inputText.getText());
         Log(logmessage);
         //inputText.setText("");
     }//GEN-LAST:event_EstimateProbabilityActionPerformed
@@ -345,6 +352,7 @@ public class View extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddPhrase;
     private javax.swing.JCheckBox BoolSpeacialChars;
+    private javax.swing.JCheckBox BooleanIgnoreNumbers;
     private javax.swing.JButton ChooseFile;
     private javax.swing.JTextArea Console;
     private javax.swing.JButton EstimateProbability;

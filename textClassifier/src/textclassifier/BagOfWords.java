@@ -24,7 +24,8 @@ public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
     private final HashMap<String, Word> Words = new HashMap<>(); 
     public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
-    public final String[] SpecialCharacters = {"\"", "(", ")", "_", "-", ",", "“", "?", "¿"};
+    public final String[] SpecialCharacters = {"\"", "(", ")", "_", "-", ",", "“", "?", "¿", ".", "\\"};
+    
     public Calulation Caltulate;
     //public void EditWords(){     }
     //double Weigh =Caltulate.WeightTermFrequency(tempWord.Count, inputWordslst.size() , TagsCount.size(),TagsCount.get(tempTag));
@@ -211,7 +212,7 @@ public class BagOfWords {
         return "[!] Empty input.";
     }
     /**Parser*/
-    public String setNewFile(File file, boolean InvertFormat, boolean DeleteSpecialCharactes) throws IOException{
+    public String setNewFile(File file, boolean InvertFormat, boolean DeleteSpecialCharactes, boolean DeleteNumbers) throws IOException{
         List<String> lines = Parser.ParseInputGetLines(file);   
         String extension = Parser.getFileExtension(file);
         if(extension.equals(".csv")){
@@ -231,7 +232,8 @@ public class BagOfWords {
                             for(String tempWord:tempWords){
                                 if(DeleteSpecialCharactes)
                                     tempWord =DeleteSpecialChars(tempWord);
-                                
+                                if(DeleteNumbers)
+                                    tempWord = DeleteNumbers(tempWord);
                                 checkNewWord(tempWord, tag);
                                 checkTag(tag);
                             }
@@ -269,7 +271,8 @@ public class BagOfWords {
                             for(String tempWord:tempWords){
                                 if(DeleteSpecialCharactes)
                                     tempWord =DeleteSpecialChars(tempWord);
-                                
+                                if(DeleteNumbers)
+                                    tempWord = DeleteNumbers(tempWord);
                                 checkNewWord(tempWord, tag);
                                 checkTag(tag);
                             }
@@ -354,6 +357,12 @@ public class BagOfWords {
     public String DeleteSpecialChars(String originalString){
         for (int i = 0; i < SpecialCharacters.length; i++) {
             originalString = originalString.replace(SpecialCharacters[i], "");
+        }
+        return originalString;
+    }
+    public String DeleteNumbers(String originalString){
+        for (int i = 0; i < 9; i++) {
+            originalString = originalString.replace(String.valueOf(i), "");
         }
         return originalString;
     }
