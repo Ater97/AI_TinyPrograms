@@ -5,14 +5,15 @@
  */
 package textclassifier;
 
-import com.sun.org.apache.xerces.internal.xs.StringList;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 
 /**
@@ -23,8 +24,60 @@ public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
     private final HashMap<String, Word> Words = new HashMap<>(); 
     public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
+    
     public Calulation Caltulate;
     //public void EditWords(){     }
+    //double Weigh =Caltulate.WeightTermFrequency(tempWord.Count, inputWordslst.size() , TagsCount.size(),TagsCount.get(tempTag));
+                                                                    
+    public String EstimateProbabilityTFIDF(String inputLine){
+        
+        inputLine = inputLine.toLowerCase().trim();
+        if(TagsCount.size()<1)
+            return "[!] It's necessary to train it first.";
+        else if(inputLine.equals(""))
+            return "[!] Empty input."; 
+        
+        Caltulate = new Calulation(Words.size(), 0, TagsCount.size());//totalWordscount,  smother,  totalTagsCount
+        ArrayList<String> inputWordslst = new ArrayList<>(Arrays.asList(inputLine.split(" ")));
+        HashMap<String, Double> TagsProduct = new HashMap<>(); // product of tags
+        
+        double tempProduct =0, percentage =0;
+        for(String tagName:TagsCount.keySet()){
+            TagsProduct.put(tagName, 0.0);
+        }
+        for(String inputWord:inputWordslst){
+            Word tempWord = Words.get(inputWord);
+            if(tempWord==null){//new word in the universe
+                
+            }
+            else{
+                    /*term t in a document d
+                    Weight Wt,d of term t document d is given by:
+
+                      TFt,d is the number of occurrences of t in document d.
+                      DFt is the number of documents containing the term t.
+                      N is the total number of documents in the corpus.
+                  */
+                  for(LabelPercentage lPercentage: tempWord.Percentages){ //wordCount, numberWords, number of documents in collection, number of documents containing word
+                    tempProduct = Caltulate.WeightTermFrequency(tempWord.Count, Words.size(), TagsCount.size(),tempWord.Percentages.size());
+                    if(TagsProduct.get(lPercentage.LabelName)>0)
+                        tempProduct = tempProduct * TagsProduct.get(lPercentage.LabelName);
+                    TagsProduct.put(lPercentage.LabelName, tempProduct);
+                }
+            }
+        }
+        String MostLikelyTag = "";
+        double probResult = 0;
+        for(String tag:TagsProduct.keySet()){
+            if(TagsProduct.get(tag) == probResult)
+                MostLikelyTag +=  " equiprobable " + tag;
+            else if(TagsProduct.get(tag)>probResult){
+                probResult = TagsProduct.get(tag);
+                MostLikelyTag = tag;
+            }
+        }
+        return String.format("(TF*IDF)\"%s\" has %s, is  probable to be %s.", inputLine,probResult,MostLikelyTag);
+    }
     
     public String EstimateProbabilityLaplace(String inputLine){
         inputLine = inputLine.toLowerCase().trim();
@@ -36,6 +89,7 @@ public class BagOfWords {
         Caltulate = new Calulation(Words.size(), 0, TagsCount.size());//totalWordscount,  smother,  totalTagsCount
         ArrayList<String> inputWordslst = new ArrayList<>(Arrays.asList(inputLine.split(" ")));
         HashMap<String, Double> TagsProduct = new HashMap<>(); // product of tags
+        
         double tempProduct =0, percentage =0;
         for(String tagName:TagsCount.keySet()){
             percentage = (double)TagsCount.get(tagName)/getTagsTotalCount();
@@ -67,7 +121,7 @@ public class BagOfWords {
                 MostLikelyTag = tag;
             }
         }
-        return String.format("(LaplaceSmothing) \"%s\" has %f,  is probably to be %s. ", inputLine, probResult*100, MostLikelyTag);
+        return String.format("(LaplaceSmothing) \"%s\" has %s,  is probably to be %s. ", inputLine,  probResult , MostLikelyTag);
     }
 
     /**Calculate probabilities*/
@@ -246,7 +300,8 @@ public class BagOfWords {
     //get a list of words with their highest probability tag
     public List<String> getVocabularyPercentage(){
         List<String> displaylst = new ArrayList<>();
-         for (String word:Words.keySet()) {
+        Map<String, Object> copy = new TreeMap<>(Words);
+         for (String word:copy.keySet()) {
             //displaylst.add(String.format("P(%s | %s) = %f ",word,Words.get(word).getGreaterTagProbability(),Words.get(word).getGreaterProbability()));
             displaylst.add(String.format("\"%s\" has %.3f%% probability to be %s",word, Words.get(word).getGreaterProbability()*100, Words.get(word).getGreaterTagProbability()));
             //displaylst.add(word + " " + Words.get(word).getGreaterProbability() +  " "+ Words.get(word).getGreaterTagProbability());
@@ -257,7 +312,8 @@ public class BagOfWords {
     public List<String> getTagPercentage(){
         double percentage =0.0;
         List<String> displaylst = new ArrayList<>();
-         for (String tag:TagsCount.keySet()) {
+        Map<String, Object> copy = new TreeMap<>(TagsCount);
+         for (String tag:copy.keySet()) {
              percentage = ((double)TagsCount.get(tag)/getTagsTotalCount()) *100;
             displaylst.add(String.format("P(%s) = %d/%d = %.3f",tag,TagsCount.get(tag),getTagsTotalCount(),percentage));//,percentage));
         }

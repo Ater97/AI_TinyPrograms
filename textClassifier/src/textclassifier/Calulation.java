@@ -20,12 +20,30 @@ public class Calulation {
         this.Smoother = smother;
         this.TotalTagsCount = totalTagsCount;
     }
-    
+    //Laplace Smothing
     public double LaplaceSmothing(double WordTagCount, double TagCount){
         double numerator = WordTagCount + 1;
         double denominator = TagCount + TotalWordscount + Smoother;
         return (numerator / denominator);
     }
+    
+    //Term Frequency  Inverse Document Frequency
+    /*term t in a document d
+      Weight Wt,d of term t document d is given by:
+    
+        TFt,d is the number of occurrences of t in document d.
+        DFt is the number of documents containing the term t.
+        N is the total number of documents in the corpus.
+    
+        IDFi = log (number of documents in collection /  number of documents containing word i)
+    */
+    public double WeightTermFrequency(double wordCount, double numberWords, double N, double DFt ){
+        double TFtd = wordCount/numberWords;
+        double Wtd = TFtd * Math.log(N/DFt);
+        return Wtd;
+    }
+    
+    
     
     public double calcProbabilityLog(double WordTagCount, double TagGlobalCount){
         double numerator = WordTagCount;
