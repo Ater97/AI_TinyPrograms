@@ -24,7 +24,7 @@ public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
     private final HashMap<String, Word> Words = new HashMap<>(); 
     public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
-    public final String[] SpecialCharacters = {"\"", "(", ")", "_", "-", ",", "“", "?", "¿", ".", "\\"};
+    public final String[] SpecialCharacters = {"\"", "(",")", "_", "-", ",", "“", "?", "¿", ".", "\\"};
     
     public Calulation Caltulate;
     //public void EditWords(){     }
@@ -185,8 +185,8 @@ public class BagOfWords {
         if (!newLineStr.equals("")){
             if (!newLineStr.contains("|")){
                 //report wrong format
-                System.out.println("[!] Error, the file didn't have the right format.");
-                return "[!] Error, the inout didn't have the right format. <word> | <tag>";
+                System.out.println("[!] Error, the input didn't have the right format.");
+                return "[!] Error, the input didn't have the right format. <word> | <tag>";
             }
             else {
                 String left, tag;
@@ -195,8 +195,8 @@ public class BagOfWords {
                 tag = newLineStr.substring(pipePos + 1, newLineStr.length()).trim();
                 if (left.isEmpty() | tag.isEmpty()){
                     //report wrong format
-                    System.out.println("[!] Error, the file didn't have the right format.");
-                    return "[!] Error, the inout didn't have the right format. <word> | <tag>";
+                    System.out.println("[!] Error, the input didn't have the right format.");
+                    return "[!] Error, the input didn't have the right format. <word> | <tag>";
                 }
                 else{
                     List<String> tempWords = Arrays.asList(left.split(" ")) ;

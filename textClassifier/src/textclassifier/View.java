@@ -251,7 +251,7 @@ public class View extends javax.swing.JFrame {
         // Load new words
        String logmessage  = bagOfWords.AddPhrase(inputText.getText());
        Log(logmessage);
-       inputText.setText("");
+       //inputText.setText("");
        aupdateVocabularyList();
     }//GEN-LAST:event_AddPhraseActionPerformed
 
@@ -322,6 +322,7 @@ public class View extends javax.swing.JFrame {
         List<String> tags = bagOfWords.getTagPercentage();
         model.addElement("Tags count: " + tags.size());
         model.addElement("Probabilities given the provided vocabulary:");
+        model.addElement("");
         for(String tag:tags){
             model.addElement(tag );
         }
