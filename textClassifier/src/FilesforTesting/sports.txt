@@ -1,0 +1,5 @@
+a great game|sports
+the election was over|not sports
+very clean match|sports
+a clean but forgerrable game |sports
+it was a close election|not sports

@@ -1,7 +1,3 @@
-hola |tag1
-hola |tag1
-hola | tag2
-adios| tag2
-adios|tag1
-adios|  tag3
-adios| tag2
+hola hola adios a|tag1
+hola adios adios b| tag2
+adios a b c|  tag3

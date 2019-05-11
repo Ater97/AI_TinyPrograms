@@ -4,9 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/GitHub/AI_TinyPrograms/textClassifier/src/textclassifier/View.java</file>
-            <file>file:/D:/GitHub/AI_TinyPrograms/textClassifier/src/textclassifier/Word.java</file>
-            <file>file:/D:/GitHub/AI_TinyPrograms/textClassifier/src/textclassifier/BagOfWords.java</file>
             <file>file:/D:/GitHub/AI_TinyPrograms/textClassifier/src/textclassifier/Calulation.java</file>
+            <file>file:/D:/GitHub/AI_TinyPrograms/textClassifier/src/textclassifier/BagOfWords.java</file>
             <file>file:/D:/GitHub/AI_TinyPrograms/textClassifier/src/textclassifier/SyntacticAnalyzer.java</file>
         </group>
     </open-files>

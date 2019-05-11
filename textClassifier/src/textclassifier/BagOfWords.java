@@ -24,7 +24,7 @@ public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
     private final HashMap<String, Word> Words = new HashMap<>(); 
     public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
-    public final String[] SpecialCharacters = {"\"", "(",")", "_", "-", ",", "“", "?", "¿", ".", "\\"};
+    public final String[] SpecialCharacters = {"\"", "(",")", "_", "-", ",", "“", "?", "¿", ".", "\\", "!", "¡"};
     
     public Calulation Caltulate;
     //public void EditWords(){     }
