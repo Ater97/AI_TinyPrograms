@@ -1,5 +1,5 @@
 # AI_TinyPrograms
-Bag of words implementation
+Bag of words implementation (textClassifier)
 
 * https://machinelearningmastery.com/gentle-introduction-bag-words-model/
 * https://monkeylearn.com/blog/practical-explanation-naive-bayes-classifier/
