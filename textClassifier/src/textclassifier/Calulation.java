@@ -11,9 +11,9 @@ package textclassifier;
  */
 public class Calulation {
 
-    private double TotalWordscount;
-    private double Smoother;
-    private double TotalTagsCount;
+    private final double TotalWordscount;
+    private final double Smoother;
+    private final double TotalTagsCount;
     
     public Calulation(double totalWordscount, double smother, double totalTagsCount) {
         this.TotalWordscount = totalWordscount;
@@ -21,7 +21,7 @@ public class Calulation {
         this.TotalTagsCount = totalTagsCount;
     }
     //Laplace Smothing
-    public double LaplaceSmothing(double WordTagCount, double TagCount){
+    public double laplaceSmothing(double WordTagCount, double TagCount){
         double numerator = WordTagCount + 1;
         double denominator = TagCount + TotalWordscount + Smoother;
         return (numerator / denominator);
@@ -37,14 +37,12 @@ public class Calulation {
     
         IDFi = log (number of documents in collection /  number of documents containing word i)
     */
-    public double WeightTermFrequency(double wordCount, double numberWords, double N, double DFt ){
+    public double weightTermFrequency(double wordCount, double numberWords, double N, double DFt ){
         double TFtd = wordCount/numberWords;
         double Wtd = TFtd * Math.log(N/DFt);
         return Wtd;
     }
-    
-    
-    
+
     public double calcProbabilityLog(double WordTagCount, double TagGlobalCount){
         double numerator = WordTagCount;
         double denominator = TagGlobalCount + TotalTagsCount * Smoother;

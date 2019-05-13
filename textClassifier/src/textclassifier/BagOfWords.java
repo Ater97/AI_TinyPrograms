@@ -24,13 +24,12 @@ public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
     private final HashMap<String, Word> Words = new HashMap<>(); 
     public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
-    public final String[] SpecialCharacters = {"\"", "(",")", "_", "-", ",", "“", "?", "¿", ".", "\\", "!", "¡"};
+    public final String[] SpecialCharacters = {"\"", "(", ")", "_", "-", ",", "“", "?", "¿", ".", "\\", "!", "¡", "”", "–", "/"}; //chars to ignore
     
     public Calulation Caltulate;
-    //public void EditWords(){     }
-    //double Weigh =Caltulate.WeightTermFrequency(tempWord.Count, inputWordslst.size() , TagsCount.size(),TagsCount.get(tempTag));
+    //double Weigh =Caltulate.weightTermFrequency(tempWord.Count, inputWordslst.size() , TagsCount.size(),TagsCount.get(tempTag));
                                                                     
-    public String EstimateProbabilityTFIDF(String inputLine){
+    public String estimateProbabilityTFIDF(String inputLine){
         
         inputLine = inputLine.toLowerCase().trim();
         if(TagsCount.size()<1)
@@ -60,7 +59,7 @@ public class BagOfWords {
                       N is the total number of documents in the corpus.
                   */
                   for(LabelPercentage lPercentage: tempWord.Percentages){ //wordCount, numberWords, number of documents in collection, number of documents containing word
-                    tempProduct = Caltulate.WeightTermFrequency(tempWord.Count, Words.size(), TagsCount.size(),tempWord.Percentages.size());
+                    tempProduct = Caltulate.weightTermFrequency(tempWord.Count, Words.size(), TagsCount.size(),tempWord.Percentages.size());
                     if(TagsProduct.get(lPercentage.LabelName)>0)
                         tempProduct = tempProduct * TagsProduct.get(lPercentage.LabelName);
                     TagsProduct.put(lPercentage.LabelName, tempProduct);
@@ -79,8 +78,8 @@ public class BagOfWords {
         }
         return String.format("(TF*IDF)\"%s\" has %s, is  probable to be %s.", inputLine,probResult,MostLikelyTag);
     }
-    
-    public String EstimateProbabilityLaplace(String inputLine){
+    /**Calculate with laplace smoothing*/
+    public String estimateProbabilityLaplace(String inputLine){
         inputLine = inputLine.toLowerCase().trim();
         if(TagsCount.size()<1)
             return "[!] It's necessary to train it first.";
@@ -100,14 +99,14 @@ public class BagOfWords {
             Word tempWord = Words.get(inputWord);
             if(tempWord==null){//new word in the universe
                 for(String tag:TagsProduct.keySet()){
-                    tempProduct = Caltulate.LaplaceSmothing(0, TagsCount.get(tag));
+                    tempProduct = Caltulate.laplaceSmothing(0, TagsCount.get(tag));
                     tempProduct = tempProduct * TagsProduct.get(tag);
                     TagsProduct.put(tag, tempProduct);
                 } 
             }
             else
                 for(String tag: TagsCount.keySet()){
-                    tempProduct = Caltulate.LaplaceSmothing(tempWord.getTagWordOcurrences(tag), TagsCount.get(tag));
+                    tempProduct = Caltulate.laplaceSmothing(tempWord.getTagWordOcurrences(tag), TagsCount.get(tag));
                     tempProduct = tempProduct * TagsProduct.get(tag);
                     TagsProduct.put(tag, tempProduct);
                 }
@@ -124,9 +123,8 @@ public class BagOfWords {
         }
         return String.format("(LaplaceSmothing) \"%s\" has %s,  is probably to be %s. ", inputLine,  probResult , MostLikelyTag);
     }
-
     /**Calculate probabilities*/
-    public String EstimateProbability(String inputLine){
+    public String estimateProbability(String inputLine){
         inputLine = inputLine.toLowerCase().trim();
         if(TagsCount.size()<1)
             return "[!] It's necessary to train it first.";
@@ -177,10 +175,10 @@ public class BagOfWords {
         }
         
         double probResult = (MostLikelyProb/denominator)*100;
-        return String.format("\"%s\" has %.3f%%  probability to be %s.", inputLine,probResult,MostLikelyTag);
+        return String.format("[+] \"%s\" has %.3f%%  probability to be %s.", inputLine,probResult,MostLikelyTag);
     }
     /**Add new phrase to the dictionary*/
-    public String AddPhrase(String newLineStr){
+    public String addPhrase(String newLineStr){
         newLineStr = newLineStr.toLowerCase().trim();
         if (!newLineStr.equals("")){
             if (!newLineStr.contains("|")){
@@ -205,7 +203,7 @@ public class BagOfWords {
                         checkTag(tag);
                     }
                 }   
-                UpdateStats();
+                updateStats();
                 return String.format("[+] \"%s\" successfully loaded. ", newLineStr);
             }
         }
@@ -213,7 +211,7 @@ public class BagOfWords {
     }
     /**Parser*/
     public String setNewFile(File file, boolean InvertFormat, boolean DeleteSpecialCharactes, boolean DeleteNumbers) throws IOException{
-        List<String> lines = Parser.ParseInputGetLines(file);   
+        List<String> lines = Parser.parseInputgetLines(file);   
         String extension = Parser.getFileExtension(file);
         if(extension.equals(".csv")){
             try {
@@ -231,16 +229,16 @@ public class BagOfWords {
                             List<String> tempWords = Arrays.asList(left.split(" ")) ;
                             for(String tempWord:tempWords){
                                 if(DeleteSpecialCharactes)
-                                    tempWord =DeleteSpecialChars(tempWord);
+                                    tempWord =deleteSpecialChars(tempWord);
                                 if(DeleteNumbers)
-                                    tempWord = DeleteNumbers(tempWord);
+                                    tempWord = deleteNumbers(tempWord);
                                 checkNewWord(tempWord, tag);
                                 checkTag(tag);
                             }
                         }
                     }
                 }
-                UpdateStats();
+                updateStats();
                 return "[+] File successfully loaded.";
            } catch (Exception e) {
                 //Report Wrong file
@@ -270,16 +268,16 @@ public class BagOfWords {
                             List<String> tempWords = Arrays.asList(left.split(" ")) ;
                             for(String tempWord:tempWords){
                                 if(DeleteSpecialCharactes)
-                                    tempWord =DeleteSpecialChars(tempWord);
+                                    tempWord =deleteSpecialChars(tempWord);
                                 if(DeleteNumbers)
-                                    tempWord = DeleteNumbers(tempWord);
+                                    tempWord = deleteNumbers(tempWord);
                                 checkNewWord(tempWord, tag);
                                 checkTag(tag);
                             }
                         }   
                     }
                 }
-                UpdateStats();
+                updateStats();
                 return "[+] File successfully loaded.";
             } catch (Exception e) {
                 //Report Wrong file
@@ -289,7 +287,7 @@ public class BagOfWords {
         return "";//bad programming i know i know
     }
     //Update percentages of all the words in the Dictionary
-    public void UpdateStats(){
+    public void updateStats(){
         Integer count =getTagsTotalCount();
         for(String word:Words.keySet()){
             Word w = Words.get(word);
@@ -354,16 +352,22 @@ public class BagOfWords {
         }
     }
     
-    public String DeleteSpecialChars(String originalString){
+    public String deleteSpecialChars(String originalString){
         for (int i = 0; i < SpecialCharacters.length; i++) {
             originalString = originalString.replace(SpecialCharacters[i], "");
         }
         return originalString;
     }
-    public String DeleteNumbers(String originalString){
+    public String deleteNumbers(String originalString){
         for (int i = 0; i < 9; i++) {
             originalString = originalString.replace(String.valueOf(i), "");
         }
         return originalString;
+    }
+    
+    public String exportVocabulary(File file){
+        ArrayList<Word> Vocabularylst = new ArrayList<>(Words.values());
+        ArrayList<String> Tagslst = new ArrayList<>(TagsCount.keySet()); 
+        return Parser.exportVocabulary(Vocabularylst, Tagslst, file);
     }
 }

@@ -57,6 +57,7 @@ public class View extends javax.swing.JFrame {
         InvertFormat = new javax.swing.JCheckBox();
         BoolSpeacialChars = new javax.swing.JCheckBox();
         BooleanIgnoreNumbers = new javax.swing.JCheckBox();
+        export = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +77,17 @@ public class View extends javax.swing.JFrame {
         filePaht.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filePahtActionPerformed(evt);
+            }
+        });
+
+        inputText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputTextActionPerformed(evt);
+            }
+        });
+        inputText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                inputTextKeyPressed(evt);
             }
         });
 
@@ -128,82 +140,100 @@ public class View extends javax.swing.JFrame {
 
         BooleanIgnoreNumbers.setText("Ignore numbers");
 
+        export.setText("Export Vocabulary");
+        export.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(ChooseFile)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(BoolSpeacialChars)
-                        .addGap(18, 18, 18)
-                        .addComponent(BooleanIgnoreNumbers)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(InvertFormat)
-                        .addGap(18, 18, 18)
-                        .addComponent(Reset))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(AddPhrase)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(EstimateProbability))
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                .addGap(15, 15, 15)
+                .addComponent(ChooseFile)
+                .addGap(9, 9, 9)
+                .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(BoolSpeacialChars)
+                .addGap(7, 7, 7)
+                .addComponent(BooleanIgnoreNumbers)
+                .addGap(8, 8, 8)
+                .addComponent(Reset))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(530, 530, 530)
+                .addComponent(InvertFormat))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel2)
+                .addGap(6, 6, 6)
+                .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 924, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addComponent(AddPhrase)
+                .addGap(15, 15, 15)
+                .addComponent(EstimateProbability)
+                .addGap(464, 464, 464)
+                .addComponent(export))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
+                .addGap(553, 553, 553)
+                .addComponent(jLabel3))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ChooseFile)
-                            .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BoolSpeacialChars)
-                            .addComponent(BooleanIgnoreNumbers))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Reset)
-                            .addComponent(InvertFormat))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(6, 6, 6)
+                        .addComponent(ChooseFile))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(filePaht, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(BoolSpeacialChars))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(BooleanIgnoreNumbers))
+                    .addComponent(Reset))
+                .addGap(5, 5, 5)
+                .addComponent(InvertFormat)
+                .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
                         .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AddPhrase)
+                    .addComponent(EstimateProbability)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(AddPhrase)
-                            .addComponent(EstimateProbability))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 896, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                        .addGap(2, 2, 2)
+                        .addComponent(export)))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel1))
+                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 824, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         bindingGroup.bind();
@@ -249,7 +279,7 @@ public class View extends javax.swing.JFrame {
 
     private void AddPhraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPhraseActionPerformed
         // Load new words
-       String logmessage  = bagOfWords.AddPhrase(inputText.getText());
+       String logmessage  = bagOfWords.addPhrase(inputText.getText());
        Log(logmessage);
        //inputText.setText("");
        aupdateVocabularyList();
@@ -266,16 +296,30 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_ResetActionPerformed
 
     private void EstimateProbabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EstimateProbabilityActionPerformed
-        String logmessage = "[+] " +bagOfWords.EstimateProbability(inputText.getText());
-        logmessage +="\n" + bagOfWords.EstimateProbabilityLaplace(inputText.getText());
-        //logmessage +="\n" + bagOfWords.EstimateProbabilityTFIDF(inputText.getText());
-        Log(logmessage);
-        //inputText.setText("");
+
+        estimateProbs();
     }//GEN-LAST:event_EstimateProbabilityActionPerformed
 
     private void BoolSpeacialCharsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoolSpeacialCharsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BoolSpeacialCharsActionPerformed
+
+    private void exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportActionPerformed
+        JFileChooser fc = new JFileChooser();
+        fc.showSaveDialog(this);
+        File f = fc.getSelectedFile();
+        Log(bagOfWords.exportVocabulary(f));
+    }//GEN-LAST:event_exportActionPerformed
+
+    private void inputTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputTextKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==10)
+            estimateProbs();
+    }//GEN-LAST:event_inputTextKeyPressed
+
+    private void inputTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputTextActionPerformed
 
     /**
      * @param args the command line arguments
@@ -349,6 +393,13 @@ public class View extends javax.swing.JFrame {
         else
             Console.setText(Console.getText() + "\n\n" + logmessage);
     }
+    //
+    public void estimateProbs(){
+        String logmessage = bagOfWords.estimateProbability(inputText.getText());
+        logmessage +="\n" + bagOfWords.estimateProbabilityLaplace(inputText.getText());
+        //logmessage +="\n" + bagOfWords.estimateProbabilityTFIDF(inputText.getText());
+        Log(logmessage);
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddPhrase;
@@ -360,6 +411,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JCheckBox InvertFormat;
     private javax.swing.JButton Reset;
     private javax.swing.JList<String> VocabularyList;
+    private javax.swing.JButton export;
     private javax.swing.JTextField filePaht;
     private javax.swing.JTextField inputText;
     private javax.swing.JLabel jLabel1;
