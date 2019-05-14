@@ -11,4 +11,7 @@ Bag of words implementation (textClassifier)
 Dataset:
 * https://storage.googleapis.com/tensorflow-workshop-examples/stack-overflow-data.csv
 * https://www.enchantedlearning.com/wordlist/geography.shtml
-* https://introcs.cs.princeton.edu/java/data/
+* https://introcs.cs.princeton.edu/java/data/ 
+
+
+https://link.springer.com/content/pdf/bbm%3A978-1-4302-0709-2%2F1.pdf Regular Expression Reference
