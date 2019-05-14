@@ -36,16 +36,6 @@
               <Component id="Reset" min="-2" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
-              <EmptySpace min="530" pref="530" max="-2" attributes="0"/>
-              <Component id="InvertFormat" min="-2" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" attributes="0">
-              <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
-              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-              <Component id="inputText" min="-2" pref="924" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" attributes="0">
               <EmptySpace min="65" pref="65" max="-2" attributes="0"/>
               <Component id="AddPhrase" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
@@ -64,6 +54,19 @@
               <Component id="jScrollPane2" min="-2" pref="580" max="-2" attributes="0"/>
               <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
               <Component id="jScrollPane3" min="-2" pref="459" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
+              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="filePerTag" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="350" max="-2" attributes="0"/>
+                      <Component id="InvertFormat" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="inputText" min="-2" pref="924" max="-2" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -90,9 +93,18 @@
                   </Group>
                   <Component id="Reset" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
-              <Component id="InvertFormat" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
+                      <Component id="InvertFormat" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="filePerTag" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
@@ -256,6 +268,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="filePerTag">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Load complete file per tag"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

@@ -5,10 +5,7 @@
  */
 package textclassifier;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -24,31 +21,6 @@ import java.util.logging.Logger;
  */
 public class SyntacticAnalyzer {
         
-    //split input per line
-    public ArrayList<String> parseInputgetLines(File file) throws FileNotFoundException, IOException{
-        ArrayList<String> lines = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {  
-            String line;
-            while ((line = br.readLine()) != null) {
-               lines.add(line);
-            }
-        }
-        return lines;
-    }
-    
-    public  String getFileExtension(File file) {
-        String extension = "";
-        try {
-            if (file != null && file.exists()) {
-                String name = file.getName();
-                extension = name.substring(name.lastIndexOf("."));
-            }
-        } catch (Exception e) {
-            extension = "";
-        }
-        return extension;
-    }
-    
     public String exportVocabulary(ArrayList<Word> Vocabularylst, ArrayList<String> Tagslst, File file){
         HashMap<String,String> BlocksbyTag = new HashMap<>();
         for(String tag:Tagslst)

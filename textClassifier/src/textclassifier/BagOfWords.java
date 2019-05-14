@@ -7,6 +7,8 @@ package textclassifier;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 
 /**
@@ -23,12 +26,9 @@ import java.util.TreeMap;
 public class BagOfWords {
     private final SyntacticAnalyzer Parser = new SyntacticAnalyzer();
     private final HashMap<String, Word> Words = new HashMap<>(); 
-    public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count>
-    public final String[] SpecialCharacters = {"\"", "(", ")", "_", "-", ",", "“", "?", "¿", ".", "\\", "!", "¡", "”", "–", "/"}; //chars to ignore
-    
+    public final HashMap<String, Integer> TagsCount= new HashMap<>(); //tags count <tag>,<count> 
     public Calulation Caltulate;
-    //double Weigh =Caltulate.weightTermFrequency(tempWord.Count, inputWordslst.size() , TagsCount.size(),TagsCount.get(tempTag));
-                                                                    
+    //double Weigh =Caltulate.weightTermFrequency(tempWord.Count, inputWordslst.size() , TagsCount.size(),TagsCount.get(tempTag));                                                                                                                                 
     public String estimateProbabilityTFIDF(String inputLine){
         
         inputLine = inputLine.toLowerCase().trim();
@@ -36,7 +36,6 @@ public class BagOfWords {
             return "[!] It's necessary to train it first.";
         else if(inputLine.equals(""))
             return "[!] Empty input."; 
-        
         Caltulate = new Calulation(Words.size(), 0, TagsCount.size());//totalWordscount,  smother,  totalTagsCount
         ArrayList<String> inputWordslst = new ArrayList<>(Arrays.asList(inputLine.split(" ")));
         HashMap<String, Double> TagsProduct = new HashMap<>(); // product of tags
@@ -89,8 +88,8 @@ public class BagOfWords {
         Caltulate = new Calulation(Words.size(), 0, TagsCount.size());//totalWordscount,  smother,  totalTagsCount
         ArrayList<String> inputWordslst = new ArrayList<>(Arrays.asList(inputLine.split(" ")));
         HashMap<String, Double> TagsProduct = new HashMap<>(); // product of tags
-        
-        double tempProduct =0, percentage =0;
+        double tempProduct =0, percentage =0, probResult = 0;
+        String MostLikelyTag = "";
         for(String tagName:TagsCount.keySet()){
             percentage = (double)TagsCount.get(tagName)/getTagsTotalCount();
             TagsProduct.put(tagName, percentage);
@@ -111,8 +110,6 @@ public class BagOfWords {
                     TagsProduct.put(tag, tempProduct);
                 }
         }
-        String MostLikelyTag = "";
-        double probResult = 0;
         for(String tag:TagsProduct.keySet()){
             if(TagsProduct.get(tag) == probResult)
                 MostLikelyTag +=  " equiprobable " + tag;
@@ -132,7 +129,8 @@ public class BagOfWords {
             return "[!] Empty input."; 
         ArrayList<String> inputWordslst = new ArrayList<>(Arrays.asList(inputLine.split(" ")));
         HashMap<String, Double> TagsProbability = new HashMap<>(); // Sum of probability by tag
-        double newWordProbability = 1.0/TagsCount.size(); //   1/ total Tags count
+        double newWordProbability = 1.0/TagsCount.size(), denominator =0,MostLikelyProb = 0;
+        String MostLikelyTag = "";
         for(String inputWord:inputWordslst){
             Word tempWord = Words.get(inputWord);
             if(tempWord==null){//new word in the universe
@@ -159,12 +157,8 @@ public class BagOfWords {
                 }
             }
         }
-        double denominator =0,MostLikelyProb = 0;
-        String MostLikelyTag = "";
-
         for(String tag:TagsProbability.keySet())
-            denominator +=  TagsProbability.get(tag);
-        
+            denominator +=  TagsProbability.get(tag);   
         for (String tag:TagsProbability.keySet()) {
             if(TagsProbability.get(tag) == MostLikelyProb)
                 MostLikelyTag +=  " equiprobable " + tag;
@@ -173,12 +167,11 @@ public class BagOfWords {
                 MostLikelyProb = TagsProbability.get(tag);
             }
         }
-        
         double probResult = (MostLikelyProb/denominator)*100;
         return String.format("[+] \"%s\" has %.3f%%  probability to be %s.", inputLine,probResult,MostLikelyTag);
     }
     /**Add new phrase to the dictionary*/
-    public String addPhrase(String newLineStr){
+    public String addPhrase(String newLineStr, boolean DeleteSpecialCharactes, boolean DeleteNumbers){
         newLineStr = newLineStr.toLowerCase().trim();
         if (!newLineStr.equals("")){
             if (!newLineStr.contains("|")){
@@ -191,6 +184,10 @@ public class BagOfWords {
                 int pipePos = newLineStr.indexOf('|');
                 left = newLineStr.substring(0, pipePos).trim();
                 tag = newLineStr.substring(pipePos + 1, newLineStr.length()).trim();
+                if(DeleteSpecialCharactes)
+                    left = left.replaceAll("[^a-zA-Z0-9]+"," ").trim();
+                if(DeleteNumbers)
+                    left = left.replaceAll("[0-9]+"," ").trim();
                 if (left.isEmpty() | tag.isEmpty()){
                     //report wrong format
                     System.out.println("[!] Error, the input didn't have the right format.");
@@ -211,80 +208,48 @@ public class BagOfWords {
     }
     /**Parser*/
     public String setNewFile(File file, boolean InvertFormat, boolean DeleteSpecialCharactes, boolean DeleteNumbers) throws IOException{
-        List<String> lines = Parser.parseInputgetLines(file);   
-        String extension = Parser.getFileExtension(file);
-        if(extension.equals(".csv")){
-            try {
-                for (String line:lines) {
-                    String left, tag;
-                    int pipePosition = line.indexOf('|');
-                    if(pipePosition>0){
-                        left = line.substring(0, pipePosition).trim().toLowerCase();                //left
-                        tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase(); //right
-                        if (left.isEmpty() | tag.isEmpty()){
-                            //Report Wrong file
-                            System.out.println("[!] Empty line (Ignored)");
-                        }
-                        else{
-                            List<String> tempWords = Arrays.asList(left.split(" ")) ;
-                            for(String tempWord:tempWords){
-                                if(DeleteSpecialCharactes)
-                                    tempWord =deleteSpecialChars(tempWord);
-                                if(DeleteNumbers)
-                                    tempWord = deleteNumbers(tempWord);
-                                checkNewWord(tempWord, tag);
-                                checkTag(tag);
-                            }
-                        }
+        List<String> lines = Files.lines(Paths.get(file.getPath())) //split input per line
+               .map(word -> word.toLowerCase().trim())
+               .collect(Collectors.toList());
+        try {
+            for (String line:lines) {
+                String left, tag;
+                int pipePosition = line.indexOf('|');
+                if(pipePosition>0){
+                    if(InvertFormat){
+                        left = line.substring(pipePosition + 1, line.length()).trim();  //rigth
+                        tag = line.substring(0, pipePosition).trim();                   //left
                     }
+                    else{
+                        left = line.substring(0, pipePosition).trim();                //left
+                        tag = line.substring(pipePosition + 1, line.length()).trim(); //right
+                    }
+                    if (left.isEmpty() | tag.isEmpty()){
+                        //Report Wrong file
+                        System.out.println("[!] Empty line (Ignored)"); 
+                    }
+                    else{
+                        if(DeleteSpecialCharactes)
+                            left = left.replaceAll("[^a-zA-Z0-9]+"," ").trim();
+                        if(DeleteNumbers)
+                            left = left.replaceAll("[0-9]+"," ").trim();
+                        List<String> tempWords = Arrays.asList(left.split(" ")) ;
+                        for(String tempWord:tempWords){
+                            checkNewWord(tempWord, tag);
+                            checkTag(tag);
+                        }
+                    }   
                 }
-                updateStats();
-                return "[+] File successfully loaded.";
-           } catch (Exception e) {
-                //Report Wrong file
-                //return "[-] Error, wrong file.";
-                System.out.println("[-] Error, wrong file.");
+                else 
+                    System.out.println("[!] line dont have | (Ignored)");
             }
+            updateStats();
+            return "[+] File successfully loaded.";
+        } catch (Exception e) {
+            //Report Wrong file
+            System.out.println("[!] Error, wrong file" + e);
+            return "[-] Error, wrong file.";
         }
-        else
-            try {
-                for (String line:lines) {
-                    String left, tag;
-                    int pipePosition = line.indexOf('|');
-                    if(pipePosition>0){
-                        if(InvertFormat){
-                            left = line.substring(pipePosition + 1, line.length()).trim().toLowerCase();  //rigth
-                            tag = line.substring(0, pipePosition).trim().toLowerCase();                   //left
-                        }
-                        else{
-                            left = line.substring(0, pipePosition).trim().toLowerCase();                //left
-                            tag = line.substring(pipePosition + 1, line.length()).trim().toLowerCase(); //right
-                        }
-                        if (left.isEmpty() | tag.isEmpty()){
-                            //Report Wrong file
-                            System.out.println("[!] Empty line (Ignored)"); 
-                        }
-                        else{
-                            List<String> tempWords = Arrays.asList(left.split(" ")) ;
-                            for(String tempWord:tempWords){
-                                if(DeleteSpecialCharactes)
-                                    tempWord =deleteSpecialChars(tempWord);
-                                if(DeleteNumbers)
-                                    tempWord = deleteNumbers(tempWord);
-                                checkNewWord(tempWord, tag);
-                                checkTag(tag);
-                            }
-                        }   
-                    }
-                }
-                updateStats();
-                return "[+] File successfully loaded.";
-            } catch (Exception e) {
-                //Report Wrong file
-                System.out.println("[!] Error, wrong file" + e);
-                return "[-] Error, wrong file.";
-            }
-        return "";//bad programming i know i know
     }
     //Update percentages of all the words in the Dictionary
     public void updateStats(){
@@ -313,9 +278,7 @@ public class BagOfWords {
         List<String> displaylst = new ArrayList<>();
         Map<String, Object> copy = new TreeMap<>(Words);
          for (String word:copy.keySet()) {
-            //displaylst.add(String.format("P(%s | %s) = %f ",word,Words.get(word).getGreaterTagProbability(),Words.get(word).getGreaterProbability()));
             displaylst.add(String.format("%s has %.3f%% probability to be %s",word, Words.get(word).getGreaterProbability()*100, Words.get(word).getGreaterTagProbability()));
-            //displaylst.add(word + " " + Words.get(word).getGreaterProbability() +  " "+ Words.get(word).getGreaterTagProbability());
         }
         return displaylst;
     }
@@ -330,7 +293,7 @@ public class BagOfWords {
         }
         return displaylst;
     }
-    //add new word or increase the counter
+    //add new word or increasex`x` the counter
     public void checkNewWord(String word,String tag){        
         Word tempWord = Words.get(word);
         if(tempWord==null)
@@ -351,23 +314,28 @@ public class BagOfWords {
             TagsCount.put(tag, i);
         }
     }
-    
-    public String deleteSpecialChars(String originalString){
-        for (int i = 0; i < SpecialCharacters.length; i++) {
-            originalString = originalString.replace(SpecialCharacters[i], "");
-        }
-        return originalString;
-    }
-    public String deleteNumbers(String originalString){
-        for (int i = 0; i < 9; i++) {
-            originalString = originalString.replace(String.valueOf(i), "");
-        }
-        return originalString;
-    }
-    
+    /**Export the current Vocabulary*/
     public String exportVocabulary(File file){
         ArrayList<Word> Vocabularylst = new ArrayList<>(Words.values());
         ArrayList<String> Tagslst = new ArrayList<>(TagsCount.keySet()); 
         return Parser.exportVocabulary(Vocabularylst, Tagslst, file);
+    }
+    /**Parse one file per tag*/
+    String setNewFileTag(File file, boolean deleteChars, boolean deleteNumbers) throws IOException {
+        String tag = file.getName().replaceFirst("[.][^.]+$", ""); //delete extension
+        Set<String> FilesWords = Files.lines(Paths.get(file.getPath()))
+            .map(word -> word.toLowerCase().trim()) 
+            .map(word ->  (deleteChars) ? word.replaceAll("[^a-zA-Z0-9]+"," ").trim() : word)   
+            .map(word ->  (deleteNumbers) ? word.replaceAll("[0-9]+"," ").trim() : word) 
+            .flatMap(line -> Arrays.stream(line.trim().split(" ")))
+            .filter(word -> !word.isEmpty())
+            .collect(Collectors.toSet());
+        //FilesWords.forEach(System.out::println); 
+        FilesWords.forEach(word -> {
+            checkNewWord(word, tag);
+            checkTag(tag);
+        });
+        updateStats();
+        return "[+] File successfully loaded. Added category:" + tag;
     }
 }

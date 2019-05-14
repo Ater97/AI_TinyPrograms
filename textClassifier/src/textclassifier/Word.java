@@ -27,7 +27,7 @@ public class Word {
         Count++;
     }
     //add new taf or increase the counter
-    public void setTag(String tag){
+    public final void setTag(String tag){
         LabelPercentage tempPercentage = exists(tag);
         if(tempPercentage == null)
             Percentages.add(new LabelPercentage(tag,1,1));
@@ -71,8 +71,6 @@ public class Word {
     public void updateStats(double tagsCount){
         for(LabelPercentage tempPercentage:Percentages){
             Integer index = Percentages.indexOf(tempPercentage);
-            
-            tempPercentage.TagPercentage = (tempPercentage.Occurrences/tagsCount); //Term Frequency on the universe
             tempPercentage.TagPercentage = (tempPercentage.Occurrences/getTagsTotalCount()); //Term Frequency on the tags of the word
             Percentages.set(index, tempPercentage);
         }

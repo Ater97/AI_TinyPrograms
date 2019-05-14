@@ -58,6 +58,7 @@ public class View extends javax.swing.JFrame {
         BoolSpeacialChars = new javax.swing.JCheckBox();
         BooleanIgnoreNumbers = new javax.swing.JCheckBox();
         export = new javax.swing.JButton();
+        filePerTag = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -147,6 +148,8 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        filePerTag.setText("Load complete file per tag");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -162,14 +165,6 @@ public class View extends javax.swing.JFrame {
                 .addComponent(BooleanIgnoreNumbers)
                 .addGap(8, 8, 8)
                 .addComponent(Reset))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(530, 530, 530)
-                .addComponent(InvertFormat))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel2)
-                .addGap(6, 6, 6)
-                .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 924, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(65, 65, 65)
                 .addComponent(AddPhrase)
@@ -187,6 +182,16 @@ public class View extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel2)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(filePerTag)
+                        .addGap(350, 350, 350)
+                        .addComponent(InvertFormat))
+                    .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 924, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,9 +211,15 @@ public class View extends javax.swing.JFrame {
                         .addGap(6, 6, 6)
                         .addComponent(BooleanIgnoreNumbers))
                     .addComponent(Reset))
-                .addGap(5, 5, 5)
-                .addComponent(InvertFormat)
-                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(InvertFormat)
+                        .addGap(1, 1, 1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(filePerTag)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
@@ -252,22 +263,22 @@ public class View extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Specify a file");  
         fileChooser.addChoosableFileFilter(filter);
         int userSelection = fileChooser.showSaveDialog(parentFrame);
-        
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             fileParse = fileChooser.getSelectedFile();
             filePaht.setText("File path: " + fileParse.getAbsolutePath());
             System.out.println("File path: " + fileParse.getAbsolutePath());
-            try {
-                //Load new file
-                String logmessage = bagOfWords.setNewFile(fileParse, InvertFormat.isSelected(),BoolSpeacialChars.isSelected(),BooleanIgnoreNumbers.isSelected());
+            try { //Load new file 
+                String logmessage = (filePerTag.isSelected()) ? 
+                        bagOfWords.setNewFileTag(fileParse, BoolSpeacialChars.isSelected(), BooleanIgnoreNumbers.isSelected()) :
+                        bagOfWords.setNewFile(fileParse, InvertFormat.isSelected(), BoolSpeacialChars.isSelected(), BooleanIgnoreNumbers.isSelected());
                 Log(logmessage);
             } catch (IOException ex) {
                 Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("[-] Unexpected error");
             }
-            aupdateVocabularyList();
+            updateVocabularyList();
         }
-        else{
+        else {
             filePaht.setText("[!] Error, the file didn't load correctly");
             System.out.println("[!] Error, the file didn't load correctly");
         }
@@ -279,14 +290,12 @@ public class View extends javax.swing.JFrame {
 
     private void AddPhraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPhraseActionPerformed
         // Load new words
-       String logmessage  = bagOfWords.addPhrase(inputText.getText());
+       String logmessage  = bagOfWords.addPhrase(inputText.getText(), BoolSpeacialChars.isSelected(), BooleanIgnoreNumbers.isSelected());
        Log(logmessage);
-       //inputText.setText("");
-       aupdateVocabularyList();
+       updateVocabularyList();
     }//GEN-LAST:event_AddPhraseActionPerformed
 
     private void ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetActionPerformed
-        // TODO add your handling code here:
         bagOfWords = new BagOfWords();
         inputText.setText("");
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -296,7 +305,6 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_ResetActionPerformed
 
     private void EstimateProbabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EstimateProbabilityActionPerformed
-
         estimateProbs();
     }//GEN-LAST:event_EstimateProbabilityActionPerformed
 
@@ -312,7 +320,6 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_exportActionPerformed
 
     private void inputTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputTextKeyPressed
-        // TODO add your handling code here:
         if(evt.getKeyCode()==10)
             estimateProbs();
     }//GEN-LAST:event_inputTextKeyPressed
@@ -355,7 +362,7 @@ public class View extends javax.swing.JFrame {
         });
     }
     //show tags
-    public void aupdateVocabularyList(){
+    public void updateVocabularyList(){
         DefaultListModel<String> model = new DefaultListModel<>();
         List<String> Voca = bagOfWords.getVocabularyPercentage();
         model.addElement("Vocabulary size: " +Voca.size());
@@ -369,20 +376,6 @@ public class View extends javax.swing.JFrame {
         model.addElement("");
         for(String tag:tags){
             model.addElement(tag );
-        }
-        VocabularyList.setModel(model);
-    }
-    //dont show tags
-    public void updateVocabularyList(){
-        DefaultListModel<String> model = new DefaultListModel<>();
-        Set<String> Voca = bagOfWords.getVocabularyList();
-        model.addElement("Vocabulary size: " +Voca.size());
-        for (String word:Voca) {
-            model.addElement(word);
-        }
-        model.addElement("------------------");
-        for(String tag:bagOfWords.TagsCount.keySet()){
-            model.addElement(tag );//+ " count: "+bagOfWords.TagsCount.get(tag)+"/"+Voca.size());
         }
         VocabularyList.setModel(model);
     }
@@ -413,6 +406,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JList<String> VocabularyList;
     private javax.swing.JButton export;
     private javax.swing.JTextField filePaht;
+    private javax.swing.JCheckBox filePerTag;
     private javax.swing.JTextField inputText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
