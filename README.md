@@ -15,3 +15,7 @@ Dataset:
 
 
 https://link.springer.com/content/pdf/bbm%3A978-1-4302-0709-2%2F1.pdf Regular Expression Reference
+
+
+NLP
+* https://towardsdatascience.com/develop-a-nlp-model-in-python-deploy-it-with-flask-step-by-step-744f3bdd7776
