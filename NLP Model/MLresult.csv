@@ -1,3 +1,10 @@
 ,from,message,predictions
 0,Luis	,Office Depot Inv#23423 $ 12.71,p2p
 1,Pedro	,I need a new spreadsheet of payments so I can find the outstanding amount of $43.40,Statements
+2,A,We might consider setting the smoothing parameter,Dispute case and W-9 request
+3,B,/,Dispute case and W-9 request
+4,C,7/18/2045,Dispute case and W-9 request
+5,D,BaNk,Dispute case and W-9 request
+6,E,Build a text report showing the main classification metrics,Dispute case and W-9 request
+7,F,dEPOT,p2p
+8,G,"""",Dispute case and W-9 request
