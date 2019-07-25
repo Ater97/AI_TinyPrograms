@@ -1,4 +1,5 @@
 # AI_TinyPrograms
+Implement NB on java -> textClassifier folder
 Bag of words implementation (textClassifier)
 
 * https://machinelearningmastery.com/gentle-introduction-bag-words-model/
@@ -17,5 +18,5 @@ Dataset:
 https://link.springer.com/content/pdf/bbm%3A978-1-4302-0709-2%2F1.pdf Regular Expression Reference
 
 
-NLP
+NLP (NLP Model)
 * https://towardsdatascience.com/develop-a-nlp-model-in-python-deploy-it-with-flask-step-by-step-744f3bdd7776
