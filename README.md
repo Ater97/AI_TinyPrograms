@@ -1,5 +1,6 @@
 # AI_TinyPrograms
 Implement NB on java -> textClassifier folder
+
 Bag of words implementation (textClassifier)
 
 * https://machinelearningmastery.com/gentle-introduction-bag-words-model/
